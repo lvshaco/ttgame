@@ -1,0 +1,4 @@
+enum SEX_T {
+    SEX_Man =0;
+    SEX_Woman =1;
+}

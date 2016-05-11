@@ -1,0 +1,8 @@
+
+// error id
+enum SERR {
+SERR_OK=0;
+
+SERR_Msg     =1; // error msg
+SERR_NoTplt  =2; // no data template
+}

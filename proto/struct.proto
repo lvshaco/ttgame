@@ -1,0 +1,30 @@
+import "enum.proto";
+
+message role_info {
+    optional uint32 roleid=1; // 唯一ID
+    optional string name=2; // 名称
+    optional uint32 create_time=3; // 创建时间
+    optional uint32 icon=4; // 头像id
+    optional uint32 sex=5; // 性别 enum SEX_T
+    optional uint32 level=6; // 等级
+    optional uint32 copper=7; // 铜钱
+    optional uint32 gold=8; // 元宝
+    optional uint32 duanwei=9; // 段位
+    optional uint32 xing=10; // 星级
+    optional uint32 mvp_cnt=11; // 总mvp数
+    optional uint32 champion_cnt=12; // 总冠军数
+    optional uint32 eat1_cnt=13; // 总吞噬人数
+    optional uint32 eat2_cnt=14; // 总吞噬数
+    optional uint32 max_mass=15; // 最大体重
+    optional uint32 province=16; // 省id
+    optional uint32 city=17; //市id
+    optional string describe=18; // 个人说明
+}
+
+message item_info {
+    optional uint32 tpltid=1;//模版id
+    optional uint32 pos=2;//位置（唯一id）
+    optional uint32 stack=3;//数量
+    optional uint32 create_time=4;//创建时间
+}
+

@@ -1,0 +1,83 @@
+import "enum.proto";
+import "struct.proto";
+
+// message id
+enum IDUM_CLI {
+//-----------------------------------------
+//c->s
+//-----------------------------------------
+
+IDUM_CBegin = 0; // client message begin
+
+// base
+IDUM_Heartbeat =1;
+IDUM_Gm = 2; // gm for test
+
+//login
+IDUM_Login = 10; // login
+
+// item
+IDUM_BuyItem = 20;
+IDUM_UseItem = 21;
+
+IDUM_CEND = 999;
+
+//----------------------------------------
+//s->c
+//----------------------------------------
+
+IDUM_Response = 1000; // 如果没有具体的反馈，用这条回复client（如错误提示，ok提示)
+
+// logout
+IDUM_Logout = 1010;
+
+// enter game
+IDUM_EnterGame = 1011;
+
+// item
+IDUM_ItemList = 1020;
+}
+
+//---------------------------------------
+// c->s
+//---------------------------------------
+message UM_Heartbeat {
+}
+
+message UM_Gm {
+    optional string command=1;
+}
+
+message UM_Login {
+    optional string acc=1;
+    optional string passwd=2;
+}
+
+message UM_BuyItem {
+    optional uint32 slot=1; // 购买物品的位置
+}
+
+message UM_UseItem {
+}
+
+//---------------------------------------
+// s->c
+//---------------------------------------
+
+message UM_Response {
+    optional uint32 msgid=1;
+    optional int32 err=2; // see SERR for error id (in msg_error.proto)
+}
+
+message UM_Logout {
+    optional int32 err=1; // see SERR for logout reason
+}
+
+message UM_EnterGame {
+    optional role_info info=1;
+}
+
+message UM_ItemList {
+    repeated item_info info=1; // item_info::stack == 0表示此物品删除，否则更新stack值，iteminfo::pos可以定位物品(实际值代表物品所在格子索引，从0开始)
+
+}

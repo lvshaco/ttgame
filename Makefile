@@ -70,25 +70,16 @@ dev:
 		lua/dblog/*.lua \
 		proto/*.proto
 
-client_dir=~/common_include
-client: proto
-	svn up $(client_dir)/pbh
-	svn up $(client_dir)/proto
-	svn up $(client_dir)/pb
-	svn up $(client_dir)/lua
-	svn up $(client_dir)/msg
-	mkdir -pv $(client_dir)/pbh 
-	mkdir -pv $(client_dir)/proto 
-	mkdir -pv $(client_dir)/pb
-	mkdir -pv $(client_dir)/lua
-	mkdir -pv $(client_dir)/msg
-	cp pbh/* $(client_dir)/pbh 
-	cp proto/* $(client_dir)/proto 
-	cp res/pb/* $(client_dir)/pb
-	cp lua/game/formula.lua $(client_dir)/lua
-	cp lua/msg/msg_client.lua lua/msg/enum.lua lua/msg/struct.lua $(client_dir)/msg
-	svn add $(client_dir)/* --force
-	svn commit $(client_dir) -m "commit by make client"
+upver:
+	cd ~/code/lshaco && make server
+	cp -r ~/server/bin .
+
+client:
+	tar -zcf ~/msg.tgz \
+		res/pb/*.pb \
+		pbh/*.pb.cc \
+		pbh/*.pb.h \
+		proto/*.proto
 
 clean:
 	rm -rf res pbh lua/msg

@@ -1,0 +1,11 @@
+oip = "0.0.0.0" --修改ip
+logfile = "shaco.log" --修改日志文件
+
+portoffset = 0 -- 修改端口
+gateport=18000+portoffset
+
+gamedb_host="127.0.0.1" -- 修改mysql ip
+gamedb_user="lxj"      -- 修改mysql user
+gamedb_passwd="123456"    -- 修改mysql passwd
+gamedb_name="tt"      -- 修改mysql db
+gamedb_port=3306

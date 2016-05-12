@@ -7,11 +7,10 @@ enum IDUM_CLI {
 //c->s
 //-----------------------------------------
 
-IDUM_CBegin = 0; // client message begin
+IDUM_GATEB = 0; // client request begin
 
 // base
-IDUM_Heartbeat =1;
-IDUM_Gm = 2; // gm for test
+IDUM_Gm = 1; // gm for test
 
 //login
 IDUM_Login = 10; // login
@@ -20,29 +19,32 @@ IDUM_Login = 10; // login
 IDUM_BuyItem = 20;
 IDUM_UseItem = 21;
 
-IDUM_CEND = 999;
+IDUM_GATEE = 999; // client request end
 
 //----------------------------------------
 //s->c
 //----------------------------------------
 
-IDUM_Response = 1000; // 如果没有具体的反馈，用这条回复client（如错误提示，ok提示)
+IDUM_CLIB =1000; // to client begin 
+
+IDUM_Response = 1001; // 如果没有具体的反馈，用这条回复client（如错误提示，ok提示)
 
 // logout
 IDUM_Logout = 1010;
 
 // enter game
 IDUM_EnterGame = 1011;
+IDUM_SyncRole = 1012;
 
 // item
 IDUM_ItemList = 1020;
+
+IDUM_CLIE =1999; // to client end
 }
 
 //---------------------------------------
 // c->s
 //---------------------------------------
-message UM_Heartbeat {
-}
 
 message UM_Gm {
     optional string command=1;
@@ -74,6 +76,10 @@ message UM_Logout {
 }
 
 message UM_EnterGame {
+    optional role_info info=1;
+}
+
+message UM_SyncRole {
     optional role_info info=1;
 }
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database>
+	<table name="exp.xlsx" number="1">
+		<SHEET filename="exp.xlsx" name="工作表 1" number="1" to="lua">
+			<FIELD name="等级" vname="LEVEL" type="int" len="0" to="lua" key="unique"/>
+			<FIELD name="等级名称" vname="L_NAME" type="string" len="0" to="lua"/>
+			<FIELD name="升级所需经验" vname="EXP" type="int" len="0" to="lua"/>
+			<FIELD name="总需经验" vname="ALLEXP" type="int" len="0" to="lua"/>
+		</SHEET>
+	</table>
+</database>

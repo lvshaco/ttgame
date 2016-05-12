@@ -20,14 +20,12 @@ proto:
 	@$(prototo)	
 
 convres:
-	@cd tool && python exceltoxmlgen.py $(HOME)/.shaco_ttgame/excel $(HOME)/.shaco_ttgame/excel/excelto_tmpl.xml
+	@cd tool && python exceltoxmlgen.py ../excel ../excel/excelto_tmpl.xml
 	@cd tool && \
 		python excelto.py \
-		$(HOME)/.shaco_ttgame/excel/excelto.xml \
-		$(HOME)/.shaco_ttgame/excel lua=../res/lua:formula=../res/lua \
+		../excel/excelto.xml \
+		../excel lua=../res/lua \
 		&& python tpltcollect.py ../res/lua ../res/lua/__alltplt.lua \
-		&& mv ../res/lua/formula.lua ../lua/game \
-	    && lua tplttable.lua && lua tpltcheck.lua
 	
 res: convres
 
@@ -36,26 +34,16 @@ dist: proto res
 	tar -zcf server.tgz \
 		shaco-foot \
 		bin/shaco \
-		bin/resolveip \
 		bin/*.so \
 		bin/*.lso \
-		bin/*.pub \
-		bin/config_self.def \
-		bin/config_game \
-		bin/config_cmdcli \
-		bin/config_gmrobot \
-		bin/config_test \
+		bin/config_self \
+		bin/config \
+		bin/config-cli \
 		res/lua/*.lua \
 		res/pb/*.pb \
 		sql/*.sql \
-		lua/base/*.lua \
-		lua/node/*.lua \
 		lua/msg/*.lua \
-		lua/test/*.lua \
-		lua/game/*.lua \
-		lua/gameredis/*.lua \
-		lua/db/*.lua \
-		lua/dblog/*.lua \
+		lua/game/*.lua
 
 dev:
 	tar -zcf server_dev.tgz \

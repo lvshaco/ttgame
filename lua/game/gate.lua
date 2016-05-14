@@ -4,9 +4,10 @@ local httpsocket = require "httpsocket"
 local socket = require "socket"
 local websocket = require "websocket"
 local pb = require "protobuf"
-local MSG_REQNAME = require "MSG_REQNAME"
+local MSG_REQNAME = require "msg_reqname"
 local sunpack = string.unpack
 local ssub = string.sub
+local traceback = debug.traceback
 
 local logic = require "logic"
 local userpool = require "userpool"
@@ -32,15 +33,7 @@ function gate.start(conf)
             data = ssub(data, pos)
             shaco.trace("Msg:", id, msgid, #data)
             local v = pb.decode(MSG_REQNAME[msgid], data)
-            shaco.fork(function()
-                local ok, err = pcall(function()
-                    logic.dispatch(id, msgid, v)
-                end)
-                if not ok then
-                    --shaco.error(err)
-                    logout(id, err)
-                end
-            end)
+            shaco.fork(logic.dispatch, id, msgid, v)
         end
         local ok, err = pcall(function() -- todo replace to pcall
             shaco.trace("New conn:", id, addr)
@@ -61,7 +54,7 @@ function gate.start(conf)
             while true do
                 local data, typ = websocket.read(id)
                 if typ == "close" then
-                    logout(id, "close")
+                    logout(id, "websocket close")
                     break
                 elseif typ == "data" then
                     __handle(id, data)

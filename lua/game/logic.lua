@@ -27,11 +27,13 @@ end
 
 function logic.dispatch(connid, msgid, v)
     if msgid == IDUM_Login then
-        local ok, err = pcall(login.login, connid, v)
+        local ok, err = xpcall(login.login, traceback, connid, v)
         if not ok then
             if err == ctx.error_logout then
                 return
-            else error(err)
+            else 
+                ctx.logout(connid, err)
+                shaco.error(err)
             end
         end
     else

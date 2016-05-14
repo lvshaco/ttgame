@@ -5,7 +5,9 @@ local sfmt = string.format
 local function exec(db, fmt, ...)
     local r = db:execute(sfmt(fmt, ...))
     --shaco.trace(tbl(r))
-    assert(r.err_code==nil, r.message)
+    if r.err_code then
+        error(r.message)
+    end
     return r
 end
 

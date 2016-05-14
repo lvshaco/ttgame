@@ -49,18 +49,19 @@ end
 
 function userpool.logout(connid, err) 
     local ur = conn2user[connid]
-    if not ur then
-        return
+    if ur then
+        conn2user[connid] = nil
+        acc2user[ur.acc] = nil
+        --name2user[ur.base.name] = nil
+        if ur.status >= gamestate.GAME then
+            oid2user[ur.info.roleid] = nil
+            ur:exitgame()
+        end
+        ur.status = gamestate.LOGOUT
+        shaco.trace("user logout:", ur.connid, ur.acc, err)
+    else
+        shaco.trace("conn logout:", connid, err)
     end
-    conn2user[connid] = nil
-    acc2user[ur.acc] = nil
-    --name2user[ur.base.name] = nil
-    if ur.status >= gamestate.GAME then
-        oid2user[ur.info.roleid] = nil
-        ur:exitgame()
-    end
-    ur.status = gamestate.LOGOUT
-    shaco.trace("user logout:", ur.connid, ur.acc, err)
 end
 
 

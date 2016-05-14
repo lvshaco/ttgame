@@ -30,33 +30,18 @@ convres:
 res: convres
 
 dist: proto res
+	mkdir -pv server
+	cp -r ~/server_linux/bin server/
+	cp bin/config* server/bin/
+	cp -r res server/
+	cp -r sql server/
+	cp -r proto server/
+	cp -r lua server/
+	tar -zcf server.tgz server
+	scp server.tgz tt:
+	ssh tt "tar -zxf server.tgz -C ."
 	rm -rf server.tgz
-	tar -zcf server.tgz \
-		shaco-foot \
-		bin/shaco \
-		bin/*.so \
-		bin/*.lso \
-		bin/config_self \
-		bin/config \
-		bin/config-cli \
-		res/lua/*.lua \
-		res/pb/*.pb \
-		sql/*.sql \
-		lua/msg/*.lua \
-		lua/game/*.lua
-
-dev:
-	tar -zcf server_dev.tgz \
-		res/lua/*.lua \
-		lua/base/*.lua \
-		lua/node/*.lua \
-		lua/msg/*.lua \
-		lua/test/*.lua \
-		lua/game/*.lua \
-		lua/gameredis/*.lua \
-		lua/db/*.lua \
-		lua/dblog/*.lua \
-		proto/*.proto
+	rm -rf server
 
 upver:
 	cd ~/code/lshaco && make server

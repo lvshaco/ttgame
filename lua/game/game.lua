@@ -14,16 +14,16 @@ shaco.start(function()
     pb.register_file("../res/pb/enum.pb")
     pb.register_file("../res/pb/struct.pb")
     pb.register_file("../res/pb/msg_client.pb")
- 
-    local function tick()
-        shaco.timeout(2000, tick)
-        logic.update()
-    end
-    shaco.timeout(2000, tick)
-
+    
     local CMD = {}
     CMD.open = function(conf)
         mydb.init(conf.db)
+
+        local function tick()
+            shaco.timeout(2000, tick)
+            logic.update()
+        end
+        shaco.timeout(2000, tick)
 
         gate.start(conf)
     end

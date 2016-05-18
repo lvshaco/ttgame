@@ -39,7 +39,7 @@ dist: proto res
 	cp -r lua server/
 	tar -zcf server.tgz server
 	scp server.tgz tt:
-	ssh tt "tar -zxf server.tgz -C ."
+	ssh tt "tar -zxf server.tgz -C . && cd server && ./start 1>/dev/null"
 	rm -rf server.tgz
 	rm -rf server
 

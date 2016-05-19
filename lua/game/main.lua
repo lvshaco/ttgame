@@ -10,5 +10,6 @@ shaco.start(function()
     shaco.call(game, 'lua', 'open', {
         db = db,
         host = assert(shaco.getenv("host")),
+        node_host = assert(shaco.getenv("node_host"))
     })
 end)

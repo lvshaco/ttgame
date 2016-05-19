@@ -6,9 +6,10 @@ require "struct"
 require "msg_client"
 require "msg_error"
 
+local node  = require "node"
 local gate  = require "gate"
 local logic = require "logic"
-local mydb  = require "mydb"
+local nodelogic = require "nodelogic"
 
 shaco.start(function() 
     pb.register_file("../res/pb/enum.pb")
@@ -17,14 +18,17 @@ shaco.start(function()
     
     local CMD = {}
     CMD.open = function(conf)
-        mydb.init(conf.db)
+        nodelogic.init(conf)
+        logic.init(conf)
 
         local function tick()
             shaco.timeout(2000, tick)
+            nodelogic.update()
             logic.update()
         end
         shaco.timeout(2000, tick)
 
+        node.start(conf)
         gate.start(conf)
     end
     shaco.dispatch("lua", function(source, session, cmd, ...)

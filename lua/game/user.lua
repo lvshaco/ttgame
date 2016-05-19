@@ -162,7 +162,7 @@ end
 
 -- send
 function user:sendpackedmsg(msgid, packedmsg)
-    ctx.send(self.connid, spack("<I2", msgid)..packedmsg)
+    ctx.send2c(self.connid, spack("<I2", msgid)..packedmsg)
 end
 
 function user:send(msgid, v)

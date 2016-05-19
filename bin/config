@@ -8,7 +8,8 @@ packagepath="lua-shaco.lso;lua-mod.lso"
 luapath="./lua-shaco/?.lua;../lua/msg/?.lua;../lua/game/?.lua"
 luamodpath="./lua-shaco/?.lua;./lua-mod/?.lua;../lua/game/?.lua"
 start="main"
---console=1
+console=0
 
 host=oip..":"..gateport
+node_host="127.0.0.1:"..nodeport
 maxclient=1000

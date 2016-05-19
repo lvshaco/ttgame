@@ -11,6 +11,7 @@ local traceback = debug.traceback
 local REQ = require "req"
 REQ.__REG {
     "h_gm",
+    "h_fight",
 --    "h_user",
 --    "h_item",
 }
@@ -21,6 +22,11 @@ ctx.error_logout = setmetatable({}, {
 })
 
 local logic = {}
+
+function logic.init(conf)
+    math.randomseed(shaco.now())
+    mydb.init(conf.db)
+end
 
 function logic.update()
 end

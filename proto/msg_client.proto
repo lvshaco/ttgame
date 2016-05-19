@@ -19,6 +19,10 @@ IDUM_Login = 10; // login
 IDUM_BuyItem = 20;
 IDUM_UseItem = 21;
 
+// fight
+IDUM_ReqServerList = 50;// 请求战斗服务器列表
+IDUM_ReqLoginFight = 51; // 请求登录战斗服
+
 IDUM_GATEE = 999; // client request end
 
 //----------------------------------------
@@ -38,6 +42,10 @@ IDUM_SyncRole = 1012;
 
 // item
 IDUM_ItemList = 1020;
+
+// fight
+IDUM_ServerList = 1002; // 战斗服列表
+IDUM_LoginFightKey = 1003; // 战斗服钥匙
 
 IDUM_CLIE =1999; // to client end
 }
@@ -62,7 +70,15 @@ message UM_BuyItem {
 message UM_UseItem {
 }
 
-//---------------------------------------
+// fight
+message UM_ReqServerList {
+}
+
+message UM_ReqLoginFight {
+    optional uint32 serverid=1; //服务器id
+}
+
+//--------------------------------------- 
 // s->c
 //---------------------------------------
 
@@ -87,3 +103,14 @@ message UM_ItemList {
     repeated item_info info=1; // item_info::stack == 0表示此物品删除，否则更新stack值，iteminfo::pos可以定位物品(实际值代表物品所在格子索引，从0开始)
 
 }
+
+// fight
+message UM_ServerList {
+    repeated server_info list=1; //战斗服务器列表
+}
+
+message UM_LoginFightKey {
+    optional uint32 serverid=1; // 服务器id
+    optional uint32 key=2; //战斗服登录钥匙
+}
+

@@ -3,6 +3,7 @@ logfile = "shaco.log" --修改日志文件
 
 portoffset = 0 -- 修改端口
 gateport=18000+portoffset
+nodeport=19000
 
 gamedb_host="127.0.0.1" -- 修改mysql ip
 gamedb_user="lxj"      -- 修改mysql user

@@ -1,0 +1,21 @@
+
+// 1
+message RegServer {
+    serverid;
+    serverip;
+    serverport;
+
+    code; // 0 for ok
+}
+
+// 10
+message LoginFight {
+    key;
+    roleid;
+
+    code; // 0 for ok
+}
+
+// 20
+message FightResult {
+}

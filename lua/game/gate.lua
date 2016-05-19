@@ -1,6 +1,4 @@
 local shaco = require "shaco"
-local http = require "http"
-local httpsocket = require "httpsocket"
 local socket = require "socket"
 local websocket = require "websocket"
 local pb = require "protobuf"
@@ -12,7 +10,7 @@ local traceback = debug.traceback
 local logic = require "logic"
 local userpool = require "userpool"
 local ctx = require "ctx"
-ctx.send = function(id, data)
+ctx.send2c = function(id, data)
     websocket.send(id, data)
 end
 ctx.logout = function(id, err)
@@ -39,18 +37,7 @@ function gate.start(conf)
             shaco.trace("New conn:", id, addr)
             socket.start(id)
             socket.readon(id)
-            local code, method, uri, head_t, body, version = http.read(
-                httpsocket.reader(id))
-            if code ~= 200 or
-                method ~= "GET" then
-                shaco.trace("Invalid conn:", id, addr, code, method)
-                socket.close(id)
-                return
-            end
-            shaco.trace("Handshake ...",id)
-            websocket.handshake(id, code, method, uri, head_t, body, version)
-            shaco.trace("Handshake ok", id)
-           
+            websocket.accept(id)
             while true do
                 local data, typ = websocket.read(id)
                 if typ == "close" then

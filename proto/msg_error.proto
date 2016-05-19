@@ -8,5 +8,7 @@ SERR_Exception =1; // 服务器异常
 SERR_Msg     =2; // error msg
 SERR_NoTplt  =3; // no data template
 SERR_Illegal =4;
-SERR_Arg =5;
+SERR_Arg =5; // 参数错误
+SERR_State =6; // 状态错误
+SERR_Remote =7; // 远端异常
 }

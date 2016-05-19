@@ -1,6 +1,7 @@
 local shaco = require "shaco"
 --local itemop = require "itemop"
 local tonumber = tonumber
+local REQ = require "req"
 
 local GM = {}
 GM.__PRIVILEGE = {
@@ -52,5 +53,13 @@ GM.getitem = function(ur, tpltid, count)
     --    ur:db_tagdirty(ur.DB_ITEM)
     --end
 end
-    
+
+GM.sl= function(ur)
+    return REQ[IDUM_ReqServerList](ur)
+end
+
+GM.fight = function(ur)
+    return REQ[IDUM_ReqLoginFight](ur, {serverid=1})
+end
+
 return GM

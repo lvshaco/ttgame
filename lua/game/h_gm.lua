@@ -24,6 +24,7 @@ REQ[IDUM_Gm] = function(ur, v)
             return true
         end
     end
+    local ret
     if #args >= 1 then
         local cmd = args[1]
         if cmd ~= "__PRIVILEGE" then
@@ -31,12 +32,12 @@ REQ[IDUM_Gm] = function(ur, v)
                 local f = GM[cmd]
                 if f then
                     shaco.trace("Gm:", ur.info.roleid, v.command)
-                    f(ur, select(2, table.unpack(args)))
+                    ret = f(ur, select(2, table.unpack(args)))
                 end
             end
         end
     end
-    return SERR_OK
+    return ret or SERR_OK
 end
 
 return REQ

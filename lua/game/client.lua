@@ -10,7 +10,7 @@ local sunpack = string.unpack
 
 local TRACE = shaco.getenv("trace")
 
-local function info_trace(msgid, tag)
+local function info_trace(msgid, tag, r)
     if not TRACE then return end
     if tag == "<" then
         print(string.format("%s--[%s:%d]", tag, MREQ[msgid], msgid))
@@ -18,6 +18,9 @@ local function info_trace(msgid, tag)
         print(string.format("--%s[%s:%d]", tag, MRES[msgid], msgid))
     else
         print(string.format("  %s[%s:%d]", tag, MRES[msgid], msgid))
+    end
+    if r then
+        print(tbl(r))
     end
 end
 
@@ -45,10 +48,10 @@ local function read(id, resid)
         local s = websocket.read(id)
         local mid, r = decode(s)
         if mid == resid then
-            info_trace(mid, ">")
+            info_trace(mid, ">", r)
             return r
         end
-        info_trace(mid, "*")
+        info_trace(mid, "*", r)
     end
 end
 
@@ -62,7 +65,6 @@ end
 local function create_robot(host, account, index, rolename) 
     local id = websocket.connect(host, "/")
     local v = rpc(id, IDUM_Login, {acc=account, passwd="123456"})
-    print(tbl(v, "role_info"))
     return id
 end
 

@@ -52,7 +52,8 @@ client:
 		res/pb/*.pb \
 		pbh/*.pb.cc \
 		pbh/*.pb.h \
-		proto/*.proto
+		proto/*.proto \
+		excel/*.xlsx
 
 clean:
 	rm -rf res pbh lua/msg

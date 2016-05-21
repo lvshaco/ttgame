@@ -7,6 +7,7 @@ local ctx = require "ctx"
 local mydb = require "mydb"
 --local bag = require "bag"
 --local itemop = require "itemop"
+local tpexp = require "__tpexp"
 
 local spack = string.pack
 
@@ -158,6 +159,26 @@ function user:gold_got(got)
         self.info.gold = 0     
     end
     return self.info.gold-old
+end
+
+-- exp
+function user:addexp(got)
+    if got <= 0 then
+        return
+    end
+    local info = self.info
+    local level = info.level
+    local exp = info.exp + got
+    while level < 100 do
+        local tp = tpexp[level]
+        if not tp then break end
+        if exp < tp.exp then break end
+        exp = exp - tp.exp
+        level = level+1
+    end
+    info.level = level
+    info.exp = exp
+	self:db_tagdirty(self.DB_ROLE)
 end
 
 -- send

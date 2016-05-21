@@ -1,11 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <database>
+    <table name="compose.xlsx" number="1">
+		<SHEET filename="compose.xlsx" name="Item" number="1" to="lua">
+			<FIELD name="神兽id" vname="id" type="int" len="0" to="lua" key="key"/>
+			<FIELD name="星级" vname="level" type="int" len="0" to="lua"/>
+			<FIELD name="材料1" vname="mat1_id" type="int" len="0" to="lua"/>
+			<FIELD name="数量1" vname="mat1_n" type="int" len="0" to="lua"/>
+			<FIELD name="材料2" vname="mat2_id" type="int" len="0" to="lua"/>
+			<FIELD name="数量2" vname="mat2_n" type="int" len="0" to="lua"/>
+			<FIELD name="材料3" vname="mat3_id" type="int" len="0" to="lua"/>
+			<FIELD name="数量3" vname="mat3_n" type="int" len="0" to="lua"/>
+			<FIELD name="材料4" vname="mat3_id" type="int" len="0" to="lua"/>
+			<FIELD name="数量4" vname="mat3_n" type="int" len="0" to="lua"/>
+		</SHEET>
+	</table>
+
 	<table name="exp.xlsx" number="1">
 		<SHEET filename="exp.xlsx" name="工作表 1" number="1" to="lua">
-			<FIELD name="等级" vname="LEVEL" type="int" len="0" to="lua" key="unique"/>
-			<FIELD name="等级名称" vname="L_NAME" type="string" len="0" to="lua"/>
-			<FIELD name="升级所需经验" vname="EXP" type="int" len="0" to="lua"/>
-			<FIELD name="总需经验" vname="ALLEXP" type="int" len="0" to="lua"/>
+			<FIELD name="等级" vname="level" type="int" len="0" to="lua" key="unique"/>
+			<FIELD name="升级所需经验" vname="exp" type="int" len="0" to="lua"/>
+			<FIELD name="总需经验" vname="allexp" type="int" len="0" to="lua"/>
+		</SHEET>
+	</table>
+    <table name="Item.xlsx" number="1">
+		<SHEET filename="Item.xlsx" name="Item" number="1" to="lua">
+            <FIELD name="物品ID" vname="id" type="int" len="0" to="lua" key="unique"/>
+			<FIELD name="物品类型" vname="type" type="int" len="0" to="lua"/>
+			<FIELD name="堆叠上限" vname="stack" type="int" len="0" to="lua"/>
+		</SHEET>
+	</table>
+	<table name="shop.xlsx" number="1">
+		<SHEET filename="shop.xlsx" name="Item" number="1" to="lua">
+			<FIELD name="物品ID" vname="id" type="int" len="0" to="lua" key="unique"/>
+			<FIELD name="铜钱价格" vname="copper" type="int" len="0" to="lua"/>
+			<FIELD name="元宝价格" vname="gold" type="int" len="0" to="lua"/>
 		</SHEET>
 	</table>
 </database>

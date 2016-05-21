@@ -16,6 +16,6 @@ message LoginFight {
     code; // 0 for ok
 }
 
-// 20
+// 11
 message FightResult {
 }

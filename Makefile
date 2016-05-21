@@ -42,6 +42,7 @@ dist: proto res
 	ssh tt "tar -zxf server.tgz -C . && cd server && ./start 1>/dev/null"
 	rm -rf server.tgz
 	rm -rf server
+	cd ~/code/tiaotiao && ./foot
 
 upver:
 	cd ~/code/lshaco && make server

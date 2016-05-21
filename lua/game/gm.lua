@@ -16,7 +16,6 @@ GM.getcopper = function(ur, count)
     local count = tonumber(count)
     if not count then return end
     if ur:copper_got(count) ~= 0 then
-        ur:db_tagdirty(ur.DB_ROLE)
         ur:syncrole()
     end
 end
@@ -25,7 +24,6 @@ GM.getgold = function(ur, count)
     local count = tonumber(count)
     if not count then return end
     if ur:gold_got(count) ~= 0 then
-        ur:db_tagdirty(ur.DB_ROLE)
         ur:syncrole()
     end
 end
@@ -44,14 +42,26 @@ GM.setlevel = function(ur, level)
     ur:syncrole()
 end
 
-GM.getitem = function(ur, tpltid, count)
-    local tpltid = tonumber(tpltid)
+GM.getitem = function(ur, id, count)
+    local id = tonumber(id)
     local count  = tonumber(count)
-    if not tpltid or not count then return end
-    --if itemop.gain(ur, tpltid, count) > 0 then
-    --    itemop.refresh(ur)
-    --    ur:db_tagdirty(ur.DB_ITEM)
-    --end
+    if not id or not count then return end
+    if ur.bag:add(id, count) then
+        ur:refreshbag()
+    end
+end
+
+GM.buyitem = function(ur, id)
+    id = tonumber(id)
+    return REQ[IDUM_BuyItem](ur, {id=id})
+end
+
+GM.shop = function(ur)
+    return REQ[IDUM_ReqShop](ur)
+end
+
+GM.hero = function(ur)
+    return REQ[IDUM_HeroLevelup](ur)
 end
 
 GM.sl= function(ur)

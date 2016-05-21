@@ -6,7 +6,6 @@ shaco.start(function()
     local __db
 
     shaco.dispatch("um", function(source, session, cmd, ...)
-        shaco.trace(cmd, ...)
         local f = assert(REQ[cmd])
         f(__db, ...)
     end)

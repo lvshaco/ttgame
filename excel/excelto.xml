@@ -4,14 +4,14 @@
 		<SHEET filename="compose.xlsx" name="Item" number="1" to="lua">
 			<FIELD name="神兽id" vname="id" type="int" len="0" to="lua" key="key"/>
 			<FIELD name="星级" vname="level" type="int" len="0" to="lua"/>
-			<FIELD name="材料1" vname="mat1_id" type="int" len="0" to="lua"/>
-			<FIELD name="数量1" vname="mat1_n" type="int" len="0" to="lua"/>
-			<FIELD name="材料2" vname="mat2_id" type="int" len="0" to="lua"/>
-			<FIELD name="数量2" vname="mat2_n" type="int" len="0" to="lua"/>
-			<FIELD name="材料3" vname="mat3_id" type="int" len="0" to="lua"/>
-			<FIELD name="数量3" vname="mat3_n" type="int" len="0" to="lua"/>
-			<FIELD name="材料4" vname="mat3_id" type="int" len="0" to="lua"/>
-			<FIELD name="数量4" vname="mat3_n" type="int" len="0" to="lua"/>
+			<FIELD name="材料1" vname="matid1" type="int" len="0" to="lua"/>
+			<FIELD name="数量1" vname="matn1" type="int" len="0" to="lua"/>
+			<FIELD name="材料2" vname="matid2" type="int" len="0" to="lua"/>
+			<FIELD name="数量2" vname="matn2" type="int" len="0" to="lua"/>
+			<FIELD name="材料3" vname="matid3" type="int" len="0" to="lua"/>
+			<FIELD name="数量3" vname="matn3" type="int" len="0" to="lua"/>
+			<FIELD name="材料4" vname="matid4" type="int" len="0" to="lua"/>
+			<FIELD name="数量4" vname="matn4" type="int" len="0" to="lua"/>
 		</SHEET>
 	</table>
 

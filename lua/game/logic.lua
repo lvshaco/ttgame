@@ -12,8 +12,8 @@ local REQ = require "req"
 REQ.__REG {
     "h_gm",
     "h_fight",
---    "h_user",
---    "h_item",
+    "h_user",
+    "h_item",
 }
 
 local ctx = require "ctx"
@@ -53,6 +53,7 @@ function logic.dispatch(connid, msgid, v)
         end
         if err then
             ur:send(IDUM_Response, {msgid=msgid, err=err})
+            shaco.trace("Response:", msgid, err)
         end
         if ur.status == gamestate.GAME then
             ur:db_flush()

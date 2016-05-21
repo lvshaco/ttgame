@@ -3,6 +3,7 @@ import "struct.proto";
 
 // message id
 enum IDUM_CLI {
+option allow_alias = true;
 //-----------------------------------------
 //c->s
 //-----------------------------------------
@@ -19,8 +20,15 @@ IDUM_Login = 10; // login
 IDUM_BuyItem = 20;
 IDUM_UseItem = 21;
 
+// shop
+IDUM_ReqShop = 22; // 请求商城列表
+
+// hero
+IDUM_HeroLevelup = 30; // 神兽升级
+
 // fight
 IDUM_ReqServerList = 50;// 请求战斗服务器列表
+
 IDUM_ReqLoginFight = 51; // 请求登录战斗服
 
 IDUM_GATEE = 999; // client request end
@@ -33,64 +41,29 @@ IDUM_CLIB =1000; // to client begin
 
 IDUM_Response = 1001; // 如果没有具体的反馈，用这条回复client（如错误提示，ok提示)
 
-// logout
 IDUM_Logout = 1010;
+IDUM_EnterGame = 1011; // 进入游戏
+IDUM_SyncRole = 1012; // 同步角色属性
 
-// enter game
-IDUM_EnterGame = 1011;
-IDUM_SyncRole = 1012;
+IDUM_ItemUpdate = 1020; // 物品更新
+IDUM_Shop = 1022; // 反馈商城列表 
 
-// item
-IDUM_ItemList = 1020;
+IDUM_Hero = 1030; // 神兽升级反馈
 
-// fight
-IDUM_ServerList = 1002; // 战斗服列表
-IDUM_LoginFightKey = 1003; // 战斗服钥匙
+IDUM_ServerList = 1050; // 战斗服列表
+IDUM_LoginFightKey = 1051; // 战斗服钥匙
 
 IDUM_CLIE =1999; // to client end
 }
 
-//---------------------------------------
-// c->s
-//---------------------------------------
-
-message UM_Gm {
-    optional string command=1;
-}
-
+// login
 message UM_Login {
     optional string acc=1;
     optional string passwd=2;
 }
-
-message UM_BuyItem {
-    optional uint32 slot=1; // 购买物品的位置
-}
-
-message UM_UseItem {
-}
-
-// fight
-message UM_ReqServerList {
-}
-
-message UM_ReqLoginFight {
-    optional uint32 serverid=1; //服务器id
-}
-
-//--------------------------------------- 
-// s->c
-//---------------------------------------
-
-message UM_Response {
-    optional uint32 msgid=1;
-    optional int32 err=2; // see SERR for error id (in msg_error.proto)
-}
-
 message UM_Logout {
     optional int32 err=1; // see SERR for logout reason
 }
-
 message UM_EnterGame {
     optional role_info info=1;
 }
@@ -99,18 +72,54 @@ message UM_SyncRole {
     optional role_info info=1;
 }
 
-message UM_ItemList {
-    repeated item_info info=1; // item_info::stack == 0表示此物品删除，否则更新stack值，iteminfo::pos可以定位物品(实际值代表物品所在格子索引，从0开始)
+// item
+message UM_BuyItem {
+    optional uint32 id=1; // 物品的模版id
+}
+message UM_UseItem {
+    optional uint32 id=1; // 物品的模版id
+}
+message UM_ItemUpdate {
+    repeated item_info list=1; // item_info::stack == 0表示此物品删除，否则更新stack值
 
 }
 
+// shop
+message UM_ReqShop {
+}
+message UM_Shop {
+    repeated shop_item list=1; // 商品列表
+}
+
+// hero
+message UM_HeroLevelup {
+}
+message UM_Hero {
+    optional uint32 heroid=1; // see role_info
+    optional uint32 herolevel=2;
+}
+
 // fight
+message UM_ReqServerList {
+}
 message UM_ServerList {
     repeated server_info list=1; //战斗服务器列表
 }
 
+message UM_ReqLoginFight {
+    optional uint32 serverid=1; //服务器id
+}
 message UM_LoginFightKey {
     optional uint32 serverid=1; // 服务器id
     optional uint32 key=2; //战斗服登录钥匙
+}
+
+// common
+message UM_Gm {
+    optional string command=1;
+}
+message UM_Response {
+    optional uint32 msgid=1;
+    optional int32 err=2; // see SERR for error id (in msg_error.proto)
 }
 

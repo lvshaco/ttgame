@@ -19,13 +19,22 @@ message role_info {
     optional uint32 province=16; // 省id
     optional uint32 city=17; //市id
     optional string describe=18; // 个人说明
+    optional uint32 heroid=19; // 神兽id
+    optional uint32 herolevel=20;//神兽level
 }
 
 message item_info {
     optional uint32 tpltid=1;//模版id
-    optional uint32 pos=2;//位置（唯一id）
     optional uint32 stack=3;//数量
     optional uint32 create_time=4;//创建时间
+}
+
+message item_list {
+    repeated item_info list=1;
+}
+
+message shop_item {
+    optional uint32 tpltid=1;//模版id(=物品)
 }
 
 message server_info {

@@ -5,8 +5,7 @@ local tbl = require "tbl"
 local MSG_RESNAME = require "msg_resname"
 local ctx = require "ctx"
 local mydb = require "mydb"
---local bag = require "bag"
---local itemop = require "itemop"
+local bag = require "bag"
 local tpexp = require "__tpexp"
 
 local spack = string.pack
@@ -26,12 +25,13 @@ function user.new(connid, status)
         db_dirty_flag = 0,
         acc = false,
         info = false,
+        bag = false,
     }
     setmetatable(self, user)
     return self
 end
 
-function user:init(roleid, gmlevel, info, itemv)
+function user:init(roleid, gmlevel, info, items)
     if not info then
         info = {
             roleid = roleid,
@@ -56,8 +56,10 @@ function user:init(roleid, gmlevel, info, itemv)
     else
         info.roleid = roleid -- force
     end
+    shaco.trace(tbl(info, "role_info"))
     self.info = info
     self.gmlevel = gmlevel
+    self.bag = bag.new(items.list)
 end
 
 function user:entergame()
@@ -99,10 +101,15 @@ function user:db_flush(force)
         mydb.send("S.role", roleid, pb.encode("role_info", self.info))
     end 
     if (flag & self.DB_ITEM) ~= 0 then
-        --mydb.exec("S.ex", "item", roleid,
-        --    pb.encode("item_list"))
+        local items = {}
+        self.bag:foreach(function(v)
+            if v.info.stack > 0 then
+                items[#items+1] = v.info
+            end
+        end)
+        shaco.trace(tbl(items, "DB_ITEM"))
+        mydb.send("S.ex", "item", roleid, pb.encode("item_list", {list=items}))
         flag = (flag & (~(self.DB_ITEM)))
-		
     end  
 	self.db_dirty_flag = flag
 end
@@ -116,6 +123,7 @@ function user:copper_take(take)
     local old = self.info.copper
     if old >= take then
         self.info.copper = old - take
+        self:db_tagdirty(self.DB_ROLE)
         return true
     else
         return false
@@ -131,6 +139,7 @@ function user:copper_got(got)
     if self.info.copper < 0 then
         self.info.copper = 0
     end
+    self:db_tagdirty(self.DB_ROLE)
     return self.info.copper-old
 end
 
@@ -143,6 +152,7 @@ function user:gold_take(take)
     local old = self.info.gold
     if old >= take then
         self.info.gold = old - take
+        self:db_tagdirty(self.DB_ROLE)
         return true
     else
         return false
@@ -158,6 +168,7 @@ function user:gold_got(got)
     if self.info.gold < 0 then
         self.info.gold = 0     
     end
+    self:db_tagdirty(self.DB_ROLE)
     return self.info.gold-old
 end
 
@@ -179,6 +190,36 @@ function user:addexp(got)
     info.level = level
     info.exp = exp
 	self:db_tagdirty(self.DB_ROLE)
+end
+
+function user:addeat1()
+    self.info.eat1_cnt = self.info.eat1_cnt + eat
+    self:db_tagdirty(self.DB_ROLE)
+end
+
+function user:addeat2()
+    self.info.eat2_cnt = self.info.eat2_cnt + eat
+    self:db_tagdirty(self.DB_ROLE)
+end
+
+function user:setmaxmass(mass)
+    if self.info.mass < mass then
+        self.info.mass = mass
+        self:db_tagdirty(self.DB_ROLE)
+    end
+end
+
+-- bag item
+function user:refreshbag()
+    local items = {}
+    self.bag:refresh(function(v)
+        items[#items+1] = v.info
+    end)
+    if #items > 0 then
+        shaco.trace(tbl(items, "refreshbag"))
+        self:db_tagdirty(self.DB_ITEM)
+        self:send(IDUM_ItemUpdate, {list=items})
+    end
 end
 
 -- send

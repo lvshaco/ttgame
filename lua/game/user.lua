@@ -59,7 +59,7 @@ function user:init(roleid, gmlevel, info, items)
     shaco.trace(tbl(info, "role_info"))
     self.info = info
     self.gmlevel = gmlevel
-    self.bag = bag.new(items.list)
+    self.bag = bag.new(items and items.list or nil)
 end
 
 function user:entergame()
@@ -192,19 +192,19 @@ function user:addexp(got)
 	self:db_tagdirty(self.DB_ROLE)
 end
 
-function user:addeat1()
+function user:addeat1(eat)
     self.info.eat1_cnt = self.info.eat1_cnt + eat
     self:db_tagdirty(self.DB_ROLE)
 end
 
-function user:addeat2()
+function user:addeat2(eat)
     self.info.eat2_cnt = self.info.eat2_cnt + eat
     self:db_tagdirty(self.DB_ROLE)
 end
 
 function user:setmaxmass(mass)
-    if self.info.mass < mass then
-        self.info.mass = mass
+    if self.info.max_mass < mass then
+        self.info.max_mass = mass
         self:db_tagdirty(self.DB_ROLE)
     end
 end

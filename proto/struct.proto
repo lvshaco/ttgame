@@ -21,6 +21,7 @@ message role_info {
     optional string describe=18; // 个人说明
     optional uint32 heroid=19; // 神兽id
     optional uint32 herolevel=20;//神兽level
+    optional uint32 exp=21;//exp
 }
 
 message item_info {

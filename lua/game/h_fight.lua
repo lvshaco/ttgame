@@ -37,9 +37,13 @@ REQ[IDUM_ReqLoginFight] = function(ur, v)
         return SERR_Remote
     end
     if r.code ~= 0 then
-        ur.fighting = false
-        shaco.error("Login fight return code:", r.code)
-        return SERR_Remote
+        if r.code ~= 1 then
+            ur.fighting = false
+            shaco.error("Login fight return code:", r.code)
+            return SERR_Remote
+        else
+            shaco.trace("Login fight return exist")
+        end
     end
 
     ur:send(IDUM_LoginFightKey, {serverid=serverid, key=key})

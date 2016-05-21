@@ -7,6 +7,7 @@ local tbl = require "tbl"
 local MRES = require "msg_resname"
 local MREQ = require "msg_reqname"
 local sunpack = string.unpack
+local spack = string.pack
 
 local TRACE = shaco.getenv("trace")
 
@@ -27,6 +28,10 @@ end
 local function responseid(reqid)
     if reqid == IDUM_Login then
         return IDUM_EnterGame
+    elseif reqid == IDUM_ReqServerList then
+        return IDUM_ServerList
+    elseif reqid == IDUM_ReqLoginFight then
+        return IDUM_LoginFightKey
     else
         return IDUM_Response
     end
@@ -62,9 +67,28 @@ local function rpc(id, reqid, v)
     return read(id, resid)
 end
 
+local function fight(s, roleid, key)
+    local id = websocket.connect(s.serverip..":"..s.serverport, '/')
+    -- EnterBoard
+    websocket.send(id, spack("<I1I4I1I4I4s1", 255, 1, 0, roleid, key, "R"))
+    shaco.fork(function()
+        while true do
+            websocket.read(id)
+        end
+    end)
+end
+
 local function create_robot(host, account, index, rolename) 
     local id = websocket.connect(host, "/")
     local v = rpc(id, IDUM_Login, {acc=account, passwd="123456"})
+    local roleid = v.info.roleid
+    local v = rpc(id, IDUM_ReqServerList,{})
+    if #v.list > 0 then
+        local s = v.list[1]
+        local v = rpc(id, IDUM_ReqLoginFight, {serverid=s.serverid})
+        assert(v.serverid == s.serverid)
+        fight(s, roleid, v.key)
+    end
     return id
 end
 

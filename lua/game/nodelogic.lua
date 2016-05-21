@@ -1,5 +1,6 @@
 local shaco = require "shaco"
 local nodepool = require "nodepool"
+local userpool = require "userpool"
 local ctx = require "ctx"
 local tbl = require "tbl"
 
@@ -20,6 +21,7 @@ function nodelogic.dispatch(connid, msgid, v)
         for k, v in pairs(v) do
             local ur = userpool.find_byid(v.roleid)
             if ur then
+                shaco.trace("fight result:", v.roleid)
                 ur:copper_got(v.copper)
                 ur:addexp(v.exp)
                 ur:addeat1(v.eat)

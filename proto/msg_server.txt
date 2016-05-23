@@ -8,6 +8,10 @@ message RegServer {
     code; // 0 for ok
 }
 
+// 2
+message SyncState {
+}
+
 // 10
 message LoginFight {
     key;

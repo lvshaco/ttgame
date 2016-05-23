@@ -68,8 +68,9 @@ GM.sl= function(ur)
     return REQ[IDUM_ReqServerList](ur)
 end
 
-GM.fight = function(ur)
-    return REQ[IDUM_ReqLoginFight](ur, {serverid=1})
+GM.fight = function(ur, id)
+    id = tonumber(id) or 1
+    return REQ[IDUM_ReqLoginFight](ur, {serverid=id})
 end
 
 return GM

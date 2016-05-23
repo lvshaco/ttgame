@@ -23,7 +23,7 @@ REQ[IDUM_ReqLoginFight] = function(ur, v)
         return SERR_Arg
     end
 
-    ur.fighting = true
+    ur.fighting = serverid
     local key = math.random(1000000, 2000000)
     local r = noderpc.urcall(ur, connid, 10, {
         key = key,

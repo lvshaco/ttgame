@@ -24,8 +24,11 @@ local node = {}
 local function logout(id, err)
     shaco.info("Node logout", id, err)
     socket.close(id)
-    nodepool.remove(id)
-    noderpc.error(id, err)
+    local v = nodepool.remove(id)
+    if v then
+        noderpc.error(id, err)
+        nodelogic.error(v.serverid, err)
+    end
 end
 
 function node.start(conf)

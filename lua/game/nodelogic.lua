@@ -16,12 +16,25 @@ function nodelogic.dispatch(connid, msgid, v)
     if msgid == 1 then
         local ok = nodepool.add(connid, v)
         ctx.send2n(connid, msgid, {code=ok and 0 or 1})
-    elseif msgid == 11 then -- todo
-        shaco.trace(tbl(v, "fightresult"))
-        for k, v in pairs(v) do
+    elseif msgid == 2 then
+        local node = nodepool.find(connid)
+        assert(node)
+        local serverid = node.serverid
+        for k, v in ipairs(v) do
             local ur = userpool.find_byid(v.roleid)
             if ur then
-                shaco.trace("fight result:", v.roleid)
+                if not ur.fighting then
+                    ur.fighting = serverid
+                else
+                    -- todo
+                end
+            end
+        end
+    elseif msgid == 11 then 
+        for k, v in ipairs(v) do
+            local ur = userpool.find_byid(v.roleid)
+            if ur and ur.fighting then
+                ur.fighting = false
                 ur:copper_got(v.copper)
                 ur:addexp(v.exp)
                 ur:addeat1(v.eat)
@@ -31,6 +44,14 @@ function nodelogic.dispatch(connid, msgid, v)
             end
         end
     end
+end
+
+function nodelogic.error(serverid, err)
+    userpool.foreach_user(function(ur)
+        if ur.fighting == serverid then
+            ur.fighting = false
+        end
+    end)
 end
 
 return nodelogic

@@ -10,8 +10,14 @@ local sunpack = string.unpack
 local spack = string.pack
 
 local TRACE = shaco.getenv("trace")
+local __roleid
+local __serverlist = {}
+local __key
 
 local function info_trace(msgid, tag, r)
+    if msgid == IDUM_LoginFightKey then
+        __key = r.key
+    end
     if not TRACE then return end
     if tag == "<" then
         print(string.format("%s--[%s:%d]", tag, MREQ[msgid], msgid))
@@ -81,15 +87,24 @@ end
 local function create_robot(host, account, index, rolename) 
     local id = websocket.connect(host, "/")
     local v = rpc(id, IDUM_Login, {acc=account, passwd="123456"})
-    local roleid = v.info.roleid
+    __roleid = v.info.roleid
     local v = rpc(id, IDUM_ReqServerList,{})
-    if #v.list > 0 then
-        local s = v.list[1]
+    __serverlist = v.list or {}
+    if #__serverlist > 0 then
+        local s = __serverlist[1]
         local v = rpc(id, IDUM_ReqLoginFight, {serverid=s.serverid})
         assert(v.serverid == s.serverid)
-        fight(s, roleid, v.key)
+        fight(s, __roleid, v.key)
     end
     return id
+end
+
+local function find_server(id)
+    for _, v in ipairs(__serverlist) do
+        if v.serverid == id then
+            return v
+        end
+    end
 end
 
 shaco.start(function()
@@ -117,7 +132,13 @@ shaco.start(function()
         end
         s = string.match(s, "^%s*(.-)%s*$")
         if s ~= "" then
-            rpc(id, IDUM_Gm, {command=s})
+            local v = rpc(id, IDUM_Gm, {command=s})
+            local a, b = string.match(s, "(%w+)[ ]+(%w)")
+            if a == 'fight' then
+                local s = find_server(tonumber(b) or 1)
+                assert(s)
+                fight(s, __roleid, __key)
+            end
         end
     end
     linenoise.savehistory(history_file)

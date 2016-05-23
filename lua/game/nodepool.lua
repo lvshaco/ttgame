@@ -25,7 +25,12 @@ function nodepool.remove(connid)
     if v then
         __conn2node[connid] = nil
         shaco.info("Node unregister", connid, tbl(v, v.serverid))
+        return v
     end
+end
+
+function nodepool.find(connid)
+    return __conn2node[connid]
 end
 
 function nodepool.find_byserverid(serverid)

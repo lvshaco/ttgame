@@ -1,5 +1,8 @@
 local shaco = require "shaco"
 local GM = require "gm"
+local tbl = require "tbl"
+local req = require "req"
+local ctx = require "ctx"
 local string = string
 local table = table
 local sfmt = string.format
@@ -10,7 +13,7 @@ REQ[IDUM_Gm] = function(ur, v)
 		return SERR_Illegal
 	end
     local args = {}
-    for v in string.gmatch(v.command, "[%w_]+") do
+    for v in string.gmatch(v.command, "[%g]+") do
         table.insert(args, v)
     end
     local function has_privilege(ur, cmd)
@@ -33,6 +36,11 @@ REQ[IDUM_Gm] = function(ur, v)
                 if f then
                     shaco.trace("Gm:", ur.info.roleid, v.command)
                     ret = f(ur, select(2, table.unpack(args)))
+                else
+                    local arg = {select(2, table.unpack(args))}
+                    local fv = load(sfmt('return {%s}', table.concat(arg, '')))()
+                    local msgid = assert(ctx.msgn2id['UM_'..cmd], 'Invalid msg cmd')
+                    ret = req[msgid](ur, fv)
                 end
             end
         end

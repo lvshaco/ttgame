@@ -4,6 +4,7 @@ local pb = require "protobuf"
 local userpool = require "userpool"
 local user = require "user"
 local mydb = require "mydb"
+local myredis = require "myredis"
 local gamestate = require "gamestate"
 local tbl = require "tbl"
 
@@ -15,14 +16,14 @@ function login.login(connid, v)
     local ur 
     ur = userpool.find_byconnid(connid)
     if ur then
-        error("conn has login:", connid)
+        error("conn has login:"..connid)
     end
     if #acc <= 0 then
         error("Invalid acc")
     end
     ur = userpool.find_byacc(acc)
     if ur then
-        error("user has login:", acc) -- undisplay character
+        error("user has login:"..acc) -- undisplay character
     end
     ur = user.new(connid, gamestate.LOGIN)
     userpool.add_byconnid(connid, ur)
@@ -30,38 +31,50 @@ function login.login(connid, v)
     ur.acc = acc
     userpool.add_byacc(acc, ur)
 
-    local v = mydb.urcall(ur, 'L.role', acc)
-
-    local newrole 
-    local gmlevel = 0
+    local gmlevel
+    local newrole
     local roleid
     local info
+    local v = myredis.urcall(ur, 'get', 'acc:'..acc)
+    if v then
+        v = pb.decode('acc_info', v)
+    end
     if not v then
         newrole = true
-        roleid = mydb.urcall(ur, "I.role", acc, gmlevel)
+        roleid = myredis.urcall(ur, 'incr', 'role_uniqueid')
+        roleid = tonumber(roleid)
+        gmlevel = 0
+        v = {roleid=roleid, gmlevel=gmlevel}
+        myredis.urcall(ur, 'set', 'acc:'..acc,
+            pb.encode('acc_info', v))
+        myredis.urcall(ur, 'set', 'role:'..roleid, 
+            pb.encode('role_info', {}))
+        shaco.trace("new role:", acc, roleid)
     else
         newrole = false
-        if v.info then
-            info = pb.decode("role_info", v.info)
-        end
         roleid = v.roleid
         gmlevel = v.gmlevel
+        info = myredis.urcall(ur, 'get', 'role:'..roleid)
+        if info then
+            info = pb.decode('role_info', info)
+        end
+        shaco.trace("load role:", acc, roleid)
     end
     local items
     if not newrole then
-        items = mydb.urcall(ur, "L.ex", "item", roleid)
+        items = myredis.urcall(ur, 'get', 'item:'..roleid)
         if items then
             items = pb.decode("item_list", items)
         end
     end
-    local gmlevel = 100 -- just for test use
+    gmlevel = 100 -- just for test use
 
     ur:init(roleid, gmlevel, info, items)
     
     userpool.add_byid(roleid, ur)
     ur.status = gamestate.GAME
     ur:entergame()
-    shaco.trace("user login ok:", connid, acc, ur.info.roleid)
+    shaco.trace("user login ok:", connid, acc, roleid)
 end
 
 return login

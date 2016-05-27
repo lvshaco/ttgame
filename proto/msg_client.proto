@@ -10,26 +10,21 @@ option allow_alias = true;
 
 IDUM_GATEB = 0; // client request begin
 
-// base
 IDUM_Gm = 1; // gm for test
-
-//login
 IDUM_Login = 10; // login
-
-// item
 IDUM_BuyItem = 20;
 IDUM_UseItem = 21;
-
-// shop
 IDUM_ReqShop = 22; // 请求商城列表
-
-// hero
 IDUM_HeroLevelup = 30; // 神兽升级
 
-// fight
 IDUM_ReqServerList = 50;// 请求战斗服务器列表
-
 IDUM_ReqLoginFight = 51; // 请求登录战斗服
+
+IDUM_SetFocus = 60; 
+IDUM_ReqRole = 62; // 请求他人数据
+IDUM_ReqFans = 63; // 请求喜欢列表
+
+IDUM_ReqRanks = 70; // 排名列表
 
 IDUM_GATEE = 999; // client request end
 
@@ -52,6 +47,10 @@ IDUM_Hero = 1030; // 神兽升级反馈
 
 IDUM_ServerList = 1050; // 战斗服列表
 IDUM_LoginFightKey = 1051; // 战斗服钥匙
+
+IDUM_RoleInfo = 1062; // 他人数据
+IDUM_Fans = 1063; // 粉丝列表
+IDUM_Ranks = 1070; // 排名列表
 
 IDUM_CLIE =1999; // to client end
 }
@@ -123,3 +122,35 @@ message UM_Response {
     optional int32 err=2; // see SERR for error id (in msg_error.proto)
 }
 
+// relation
+message UM_SetFocus { 
+    optional uint32 type=1; // 1:关注，2:喜欢
+    optional uint32 set=2; // 1: 是，0否
+    optional uint32 roleid=3; // focus的角色
+}
+
+message UM_ReqRole {
+    optional uint32 roleid=1;
+}
+message UM_RoleInfo {
+    optional role_info info=1;
+}
+
+message UM_ReqFans {
+    optional int32 type=1; // 1: 粉丝列表 2:喜欢我列表
+    optional uint32 range1=2; // 从第几个到第几个, 从0开始
+    optional uint32 range2=3;
+    optional uint32 roleid=4;
+}
+message UM_Fans {
+    repeated fans_info list=1; //列表
+}
+
+// rank
+message UM_ReqRanks {
+    optional int32 type=1; // 1.地位 2.粉丝 3.喜欢 4.鲜花 5.吞噬
+    optional int32 subtype=2; // 1day 2week 3month 4total 5history
+}
+message UM_Ranks {
+    repeated rank_info list=1;
+}

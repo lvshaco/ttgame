@@ -1,0 +1,14 @@
+dofile "config_self"
+
+logfile="test.log"
+loglevel="."
+maxsocket=10
+
+modpath="."
+packagepath="lua-shaco.lso;lua-mod.lso"
+luapath="./lua-shaco/?.lua;../lua/base/?.lua;../lua/node/?.lua;../res/lua/?.lua;../lua/msg/?.lua;../lua/game/?.lua;../lua/db/?.lua;../lua/dblog/?.lua"
+luamodpath="../lua/test/?.lua;./lua-shaco/?.lua;./lua-mod/?.lua;../lua/base/?.lua;../lua/node/?.lua"
+luacpath="./?.so"
+
+start = "test"
+--host="127.0.0.1:"..cmdport

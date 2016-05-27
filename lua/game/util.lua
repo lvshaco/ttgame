@@ -13,4 +13,39 @@ function util.daybase(sec)
     return util.second2day(sec)*86400-_hour8s
 end
 
+function util.strftime(sec)
+    local tm = os.date("*t", sec)
+    return sformat("%04d%02d%02d-%02d:%02d:%02d", 
+        tm.year, tm.month, tm.day, tm.hour, tm.min, tm.sec)
+end
+function util.lastdaybase(sec)
+    sec = sec-24*3600
+    return util.daybase(sec)
+end
+
+function util.lastweekbase(sec)
+    local tm = os.date("*t", sec)
+    local week = tm.wday-1
+    if week==0 then
+        week=7
+    end
+    sec = sec - (week+6)*24*3600
+    return sec
+end
+
+function util.lastmonthbase(sec)
+    local tm = os.date("*t", sec)
+    if tm.month == 1 then
+        tm.month = 12
+        tm.year = tm.year-1
+    else
+        tm.month = tm.month-1
+    end
+    tm.day=1
+    tm.hour=0
+    tm.min=0
+    tm.sec=0
+    return os.time(tm)
+end
+
 return util

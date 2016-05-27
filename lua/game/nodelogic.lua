@@ -39,6 +39,7 @@ function nodelogic.dispatch(connid, msgid, v)
                 ur:addexp(v.exp)
                 ur:addeat1(v.eat)
                 ur:setmaxmass(v.mass)
+                ur:setduanwei(v.rank)
                 ur:syncrole()
                 ur:db_flush()
             end

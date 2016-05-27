@@ -36,4 +36,20 @@
 			<FIELD name="元宝价格" vname="gold" type="int" len="0" to="lua"/>
 		</SHEET>
 	</table>
+    <table name="duanwei.xlsx" number="1">
+		<SHEET filename="duanwei.xlsx" name="Item" number="1" to="lua">
+			<FIELD name="段位id" vname="id" type="int" len="0" to="lua" key="unique"/>
+			<FIELD name="段位名称" vname="name" type="string" len="0" to="lua"/>
+			<FIELD name="升星" vname="up" type="int" len="0" to="lua"/>
+			<FIELD name="降星" vname="down" type="int" len="0" to="lua"/>
+		</SHEET>
+	</table>
+	<table name="duanwei_star.xlsx" number="1">
+		<SHEET filename="duanwei_star.xlsx" name="Item" number="1" to="lua">
+			<FIELD name="段位id" vname="id" type="int" len="0" to="lua" key="unique"/>
+			<FIELD name="段位名称" vname="name" type="string" len="0" to="lua"/>
+			<FIELD name="星数" vname="star" type="int" len="0" to="lua"/>
+		</SHEET>
+	</table>
+
 </database>

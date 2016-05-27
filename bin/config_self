@@ -10,3 +10,7 @@ gamedb_user="lxj"      -- 修改mysql user
 gamedb_passwd="123456"    -- 修改mysql passwd
 gamedb_name="tt"      -- 修改mysql db
 gamedb_port=3306
+
+redis_host="127.0.0.1"
+redis_port=17001
+redis_passwd="123456"

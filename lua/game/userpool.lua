@@ -64,22 +64,12 @@ function userpool.logout(connid, err)
     end
 end
 
-
-local day_msec = 86400000
-local last_day = util.msecond2day(shaco.now())
-
-function userpool.foreach(now)
-    local now_day  = util.msecond2day(now)
-    local changed
-    if now_day ~= last_day then
-        last_day = now_day
-        changed = true
-    end
+function userpool.update(now, daychanged)
     for _, ur in pairs(oid2user) do
-        if changed then
+        ur:update(now)
+        if daychanged then
             ur:onchangeday()
         end
-        ur:ontime(now)
     end
 end
 

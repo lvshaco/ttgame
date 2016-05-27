@@ -40,6 +40,7 @@ REQ[IDUM_BuyItem] = function(ur, v)
     ur.bag:add(id, 1)
     ur:refreshbag()
     ur:syncrole()
+    return SERR_OK
 end
 
 REQ[IDUM_UseItem] = function(ur, v)

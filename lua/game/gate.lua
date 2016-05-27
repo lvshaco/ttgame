@@ -16,6 +16,7 @@ end
 ctx.logout = function(id, err)
     userpool.logout(id, err)
     socket.close(id)
+    shaco.trace("Conn disconnect:", id, err)
 end
 local logout = ctx.logout
 
@@ -29,7 +30,7 @@ function gate.start(conf)
             local msgid, pos = sunpack("<I2", data)
             assert(msgid >= IDUM_GATEB and msgid <= IDUM_GATEE, "Out msg id")
             data = ssub(data, pos)
-            shaco.trace("Msg:", id, msgid, #data)
+            shaco.debug("Msg:", id, msgid, #data)
             local v = pb.decode(MSG_REQNAME[msgid], data)
             shaco.fork(logic.dispatch, id, msgid, v)
         end

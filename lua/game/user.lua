@@ -5,8 +5,12 @@ local tbl = require "tbl"
 local MSG_RESNAME = require "msg_resname"
 local ctx = require "ctx"
 local mydb = require "mydb"
+local myredis = require "myredis"
 local bag = require "bag"
+local rank = require "rank"
 local tpexp = require "__tpexp"
+local tpduanwei = require "__tpduanwei"
+local tpduanwei_star = require "__tpduanwei_star"
 
 local spack = string.pack
 
@@ -42,8 +46,8 @@ function user:init(roleid, gmlevel, info, items)
             level=0,
             copper=10000,
             gold=10000,
-            duanwei=0,
-            xing=0,
+            duanwei=1,
+            star=1,
             mvp_cnt=0,
             champion_cnt=0,
             eat1_cnt=0,
@@ -53,17 +57,32 @@ function user:init(roleid, gmlevel, info, items)
             city=0,
             describe="",
         }
+        self:db_tagdirty(self.DB_ROLE)
     else
+        if info.duanwei<=1 then
+            info.duanwei=1
+        end
+        if info.star<=1 then
+            info.star=1
+        end
         info.roleid = roleid -- force
     end
     shaco.trace(tbl(info, "role_info"))
     self.info = info
     self.gmlevel = gmlevel
     self.bag = bag.new(items and items.list or nil)
+
+    self:db_flush()
 end
 
 function user:entergame()
 	self:send(IDUM_EnterGame, {info=self.info})
+
+    local items = {}
+    self.bag:foreach(function(v)
+        items[#items+1] = v.info
+    end)
+    self:send(IDUM_ItemUpdate, {list=items})
 end
 
 function user:exitgame()
@@ -77,7 +96,7 @@ end
 function user:update(now)
 end
 
-function user:onchangeday(login)
+function user:onchangeday()
 end
 
 -- db
@@ -98,7 +117,7 @@ function user:db_flush(force)
         up_role = true
     end
     if up_role then
-        mydb.send("S.role", roleid, pb.encode("role_info", self.info))
+        myredis.send('set', 'role:'..roleid, pb.encode("role_info", self.info))
     end 
     if (flag & self.DB_ITEM) ~= 0 then
         local items = {}
@@ -108,7 +127,7 @@ function user:db_flush(force)
             end
         end)
         shaco.trace(tbl(items, "DB_ITEM"))
-        mydb.send("S.ex", "item", roleid, pb.encode("item_list", {list=items}))
+        myredis.send('set', 'item:'..roleid, pb.encode("item_list", {list=items}))
         flag = (flag & (~(self.DB_ITEM)))
     end  
 	self.db_dirty_flag = flag
@@ -192,14 +211,60 @@ function user:addexp(got)
 	self:db_tagdirty(self.DB_ROLE)
 end
 
-function user:addeat1(eat)
-    self.info.eat1_cnt = self.info.eat1_cnt + eat
+function user:setduanwei(i)
+    if i<= 0 then 
+        return
+    end
+    local dw = self.info.duanwei
+    local star = self.info.star
+    local tp = tpduanwei[dw]
+    local tpstar = tpduanwei_star[dw]
+    if not tp then
+        shaco.error("Tplt duanwei not found:", dw)
+        return
+    end
+    if not tpstar then
+        shaco.error("Tplt duanwei_star not found:", dw)
+        return
+    end
+    if i <= tp.up then
+        star = star+1
+        if star > tpstar.star then
+            if not tpduanwei[dw+1] then
+                return
+            else
+                dw = dw+1
+                star = 1
+            end
+        end
+    elseif tp.down>tp.up and i > tp.down then
+        if star > 1 then
+            star = star-1
+        else 
+            return
+        end
+    else
+        return
+    end
+    self.info.duanwei = dw
+    self.info.star = star
     self:db_tagdirty(self.DB_ROLE)
+    rank.setpower(self.info.roleid, dw, star)
+end
+
+function user:addeat1(eat)
+    if eat > 0 then
+        self.info.eat1_cnt = self.info.eat1_cnt + eat
+        self:db_tagdirty(self.DB_ROLE)
+        rank.addscore(self.info.roleid, 'kill', eat)
+    end
 end
 
 function user:addeat2(eat)
-    self.info.eat2_cnt = self.info.eat2_cnt + eat
-    self:db_tagdirty(self.DB_ROLE)
+    if eat > 0 then
+        self.info.eat2_cnt = self.info.eat2_cnt + eat
+        self:db_tagdirty(self.DB_ROLE)
+    end
 end
 
 function user:setmaxmass(mass)
@@ -224,6 +289,7 @@ end
 
 -- send
 function user:sendpackedmsg(msgid, packedmsg)
+    shaco.debug('Msg send:', self.connid, msgid, #packedmsg)
     ctx.send2c(self.connid, spack("<I2", msgid)..packedmsg)
 end
 
@@ -231,6 +297,14 @@ function user:send(msgid, v)
     local name = MSG_RESNAME[msgid]
     assert(name)
     self:sendpackedmsg(msgid, pb.encode(name, v))
+end
+
+function user:safecall(func)
+    local r = func()
+    if self.status == LOGOUT then
+        error(ctx.error_logout)
+    end
+    return r
 end
 
 return user

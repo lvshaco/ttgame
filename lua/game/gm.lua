@@ -51,26 +51,13 @@ GM.getitem = function(ur, id, count)
     end
 end
 
-GM.buyitem = function(ur, id)
-    id = tonumber(id)
-    return REQ[IDUM_BuyItem](ur, {id=id})
-end
-
-GM.shop = function(ur)
-    return REQ[IDUM_ReqShop](ur)
-end
-
-GM.hero = function(ur)
-    return REQ[IDUM_HeroLevelup](ur)
-end
-
-GM.sl= function(ur)
-    return REQ[IDUM_ReqServerList](ur)
-end
-
 GM.fight = function(ur, id)
     id = tonumber(id) or 1
     return REQ[IDUM_ReqLoginFight](ur, {serverid=id})
+end
+
+GM.duanwei = function(ur, i)
+    ur:setduanwei(tonumber(i))
 end
 
 return GM

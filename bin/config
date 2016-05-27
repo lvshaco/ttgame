@@ -1,6 +1,6 @@
 dofile "config_self"
 maxsocket=1024
-loglevel="."
+loglevel="-"
 
 modpath="."
 luacpath="./?.so"

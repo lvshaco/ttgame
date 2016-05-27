@@ -21,12 +21,13 @@ shaco.start(function()
         nodelogic.init(conf)
         logic.init(conf)
 
+        local intv = logic.interval
         local function tick()
-            shaco.timeout(2000, tick)
+            shaco.timeout(intv, tick)
             nodelogic.update()
             logic.update()
         end
-        shaco.timeout(2000, tick)
+        shaco.timeout(intv, tick)
 
         node.start(conf)
         gate.start(conf)

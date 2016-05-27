@@ -14,6 +14,6 @@ SERR_Remote =7; // 远端异常
 
 SERR_Nocopper = 21; // 铜币不足
 SERR_Nogold = 22; // 元宝不足
-
 SERR_Nomat = 30; // 材料不足
+SERR_Norole = 31;// 没有指定角色
 }

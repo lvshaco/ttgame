@@ -59,10 +59,10 @@ function user:init(roleid, gmlevel, info, items)
         }
         self:db_tagdirty(self.DB_ROLE)
     else
-        if info.duanwei<=1 then
+        if info.duanwei<1 then
             info.duanwei=1
         end
-        if info.star<=1 then
+        if info.star<1 then
             info.star=1
         end
         info.roleid = roleid -- force

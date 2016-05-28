@@ -12,6 +12,7 @@ REQ[IDUM_Gm] = function(ur, v)
 	if ur.gmlevel <= 0 then
 		return SERR_Illegal
 	end
+    shaco.trace("gm:", v.command)
     local args = {}
     for v in string.gmatch(v.command, "[%g]+") do
         table.insert(args, v)

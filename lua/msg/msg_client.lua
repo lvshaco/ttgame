@@ -48,5 +48,6 @@ rawset(_ENV, "IDUM_LoginFightKey", 1051) -- 战斗服钥匙
 rawset(_ENV, "IDUM_RoleInfo", 1062) -- 他人数据
 rawset(_ENV, "IDUM_Fans", 1063) -- 粉丝列表
 rawset(_ENV, "IDUM_Ranks", 1070) -- 排名列表
+rawset(_ENV, "IDUM_FightLikes", 1071) -- 战斗结束是否喜欢列表
 
 rawset(_ENV, "IDUM_CLIE", 1999) -- to client end

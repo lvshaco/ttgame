@@ -51,6 +51,7 @@ IDUM_LoginFightKey = 1051; // 战斗服钥匙
 IDUM_RoleInfo = 1062; // 他人数据
 IDUM_Fans = 1063; // 粉丝列表
 IDUM_Ranks = 1070; // 排名列表
+IDUM_FightLikes = 1071; // 战斗结束是否喜欢列表
 
 IDUM_CLIE =1999; // to client end
 }
@@ -153,4 +154,9 @@ message UM_ReqRanks {
 }
 message UM_Ranks {
     repeated rank_info list=1;
+}
+
+message UM_FightLikes {
+    repeated bool attentions=1; //是否关注列表(索引对应排名)
+    repeated bool likes=2;// 是否喜欢列表
 }

@@ -13,15 +13,15 @@ end
 function nodelogic.update()
 end
 
-function nodelogic.dispatch(connid, msgid, v)
+function nodelogic.dispatch(connid, msgid, msg)
     if msgid == 1 then
-        local ok = nodepool.add(connid, v)
+        local ok = nodepool.add(connid, msg)
         ctx.send2n(connid, msgid, {code=ok and 0 or 1})
     elseif msgid == 2 then
         local node = nodepool.find(connid)
         assert(node)
         local serverid = node.serverid
-        for k, v in ipairs(v) do
+        for k, v in ipairs(msg) do
             local ur = userpool.find_byid(v.roleid)
             if ur then
                 if not ur.fighting then
@@ -32,8 +32,8 @@ function nodelogic.dispatch(connid, msgid, v)
             end
         end
     elseif msgid == 11 then 
-        local roles = v.roles
-        local ranks = v.ranks
+        local roles = msg.roles
+        local ranks = msg.ranks
         for i=1, #ranks do
             ranks[i] = math.floor(ranks[i])
         end

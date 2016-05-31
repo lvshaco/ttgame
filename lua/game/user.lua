@@ -56,6 +56,7 @@ function user:init(roleid, gmlevel, info, items)
             province=0,
             city=0,
             describe="",
+            exp=0,
         }
         self:db_tagdirty(self.DB_ROLE)
     else

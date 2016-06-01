@@ -25,6 +25,10 @@ IDUM_ReqRole = 62; // 请求他人数据
 IDUM_ReqFans = 63; // 请求喜欢列表
 
 IDUM_ReqRanks = 70; // 排名列表
+IDUM_GetTopMsg = 80; //请求热门留言
+IDUM_GetMsg = 81;//请求留言
+IDUM_SendMsg =82;//发送留言
+IDUM_LikeMsg =83;//喜欢留言
 
 IDUM_GATEE = 999; // client request end
 
@@ -52,6 +56,8 @@ IDUM_RoleInfo = 1062; // 他人数据
 IDUM_Fans = 1063; // 粉丝列表
 IDUM_Ranks = 1070; // 排名列表
 IDUM_FightLikes = 1071; // 战斗结束是否喜欢列表
+IDUM_TopMsg =1080; //热门留言
+IDUM_MsgList =1081;// 留言列表
 
 IDUM_CLIE =1999; // to client end
 }
@@ -145,6 +151,9 @@ message UM_ReqFans {
 }
 message UM_Fans {
     repeated fans_info list=1; //列表
+    optional uint32 range1=2; // 从第几个到第几个, 从0开始
+    optional uint32 range2=3;
+    optional uint32 roleid=4;
 }
 
 // rank
@@ -159,4 +168,33 @@ message UM_Ranks {
 message UM_FightLikes {
     repeated bool attentions=1; //是否关注列表(索引对应排名)
     repeated bool likes=2;// 是否喜欢列表
+}
+
+// msg
+message UM_GetTopMsg { 
+    optional uint32 roleid=1;
+}
+message UM_GetMsg {
+    optional uint32 roleid=1;
+    optional uint32 range1=2; //从第几到第几，从0开始
+    optional uint32 range2=3;
+}
+message UM_SendMsg {
+    optional uint32 roleid=1; // 谁的留言版
+    optional string content=2; // 38个字
+}
+message UM_LikeMsg {
+    optional uint32 roleid=1; // 谁的留言版
+    optional uint32 msgid=2; // 哪个留言
+    optional int32 set=3; //1是like, 0是取消like
+}
+message UM_TopMsg {
+    optional uint32 roleid=1;
+    repeated msg_info list=2;
+}
+message UM_MsgList {
+    optional uint32 roleid=1;
+    optional uint32 range1=2;//从第几到第几，从0开始
+    optional uint32 range2=3;
+    repeated msg_info list=4;
 }

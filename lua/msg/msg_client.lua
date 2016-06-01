@@ -22,6 +22,10 @@ rawset(_ENV, "IDUM_ReqRole", 62) -- 请求他人数据
 rawset(_ENV, "IDUM_ReqFans", 63) -- 请求喜欢列表
 
 rawset(_ENV, "IDUM_ReqRanks", 70) -- 排名列表
+rawset(_ENV, "IDUM_GetTopMsg", 80) --请求热门留言
+rawset(_ENV, "IDUM_GetMsg", 81)--请求留言
+rawset(_ENV, "IDUM_SendMsg", 82)--发送留言
+rawset(_ENV, "IDUM_LikeMsg", 83)--喜欢留言
 
 rawset(_ENV, "IDUM_GATEE", 999) -- client request end
 
@@ -49,5 +53,7 @@ rawset(_ENV, "IDUM_RoleInfo", 1062) -- 他人数据
 rawset(_ENV, "IDUM_Fans", 1063) -- 粉丝列表
 rawset(_ENV, "IDUM_Ranks", 1070) -- 排名列表
 rawset(_ENV, "IDUM_FightLikes", 1071) -- 战斗结束是否喜欢列表
+rawset(_ENV, "IDUM_TopMsg", 1080) --热门留言
+rawset(_ENV, "IDUM_MsgList", 1081)-- 留言列表
 
 rawset(_ENV, "IDUM_CLIE", 1999) -- to client end

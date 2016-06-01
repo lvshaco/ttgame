@@ -13,4 +13,8 @@ MSG_REQNAME[IDUM_SetFocus] = "UM_SetFocus"
 MSG_REQNAME[IDUM_ReqRole] = "UM_ReqRole"
 MSG_REQNAME[IDUM_ReqFans] = "UM_ReqFans"
 MSG_REQNAME[IDUM_ReqRanks] = "UM_ReqRanks"
+MSG_REQNAME[IDUM_GetTopMsg] = "UM_GetTopMsg"
+MSG_REQNAME[IDUM_GetMsg] = "UM_GetMsg"
+MSG_REQNAME[IDUM_SendMsg] = "UM_SendMsg"
+MSG_REQNAME[IDUM_LikeMsg] = "UM_LikeMsg"
 return MSG_REQNAME

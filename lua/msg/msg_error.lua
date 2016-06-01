@@ -15,3 +15,5 @@ rawset(_ENV, "SERR_Nocopper", 21) -- 铜币不足
 rawset(_ENV, "SERR_Nogold", 22) -- 元宝不足
 rawset(_ENV, "SERR_Nomat", 30) -- 材料不足
 rawset(_ENV, "SERR_Norole", 31)-- 没有指定角色
+
+rawset(_ENV, "SERR_NotFriend", 80)-- 不是好友

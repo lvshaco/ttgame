@@ -14,4 +14,6 @@ MSG_RESNAME[IDUM_RoleInfo] = "UM_RoleInfo"
 MSG_RESNAME[IDUM_Fans] = "UM_Fans"
 MSG_RESNAME[IDUM_Ranks] = "UM_Ranks"
 MSG_RESNAME[IDUM_FightLikes] = "UM_FightLikes"
+MSG_RESNAME[IDUM_TopMsg] = "UM_TopMsg"
+MSG_RESNAME[IDUM_MsgList] = "UM_MsgList"
 return MSG_RESNAME

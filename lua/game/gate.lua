@@ -3,6 +3,7 @@ local socket = require "socket"
 local websocket = require "websocket"
 local pb = require "protobuf"
 local MSG_REQNAME = require "msg_reqname"
+local tbl = require "tbl"
 local sunpack = string.unpack
 local ssub = string.sub
 local traceback = debug.traceback
@@ -32,6 +33,7 @@ function gate.start(conf)
             data = ssub(data, pos)
             shaco.debug("Msg:", id, msgid, #data)
             local v = pb.decode(MSG_REQNAME[msgid], data)
+            shaco.debug(tbl(v, msgid))
             shaco.fork(logic.dispatch, id, msgid, v)
         end
         local ok, err = pcall(function() -- todo replace to pcall

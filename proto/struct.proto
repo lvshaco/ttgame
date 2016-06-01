@@ -66,4 +66,20 @@ message rank_info {
     optional uint32 value1=6;
     optional uint32 value2=7;
 }
-
+// 留言信息
+message msg_info {
+    optional uint32 roleid=1; // 谁留言
+    optional string name=2;
+    optional uint32 icon=3;
+    optional uint32 sex=4;
+    optional uint32 id=5;// 留言id
+    optional uint32 createtime=6;
+    optional string content=7; // 38个字
+    optional uint32 likecnt=8; // 喜欢个数
+}
+message msg_base {
+    optional uint32 roleid=1; // 谁留言
+    optional uint32 id=2;// 留言id
+    optional uint32 createtime=3;
+    optional string content=4; // 38个字
+}

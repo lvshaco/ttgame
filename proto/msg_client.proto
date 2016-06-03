@@ -29,7 +29,9 @@ IDUM_GetTopMsg = 80; //请求热门留言
 IDUM_GetMsg = 81;//请求留言
 IDUM_SendMsg =82;//发送留言
 IDUM_LikeMsg =83;//喜欢留言
-
+IDUM_GetFriend = 90; //请求好友列表
+IDUM_InviteFriend =91; //邀请好友
+IDUM_ResponseInvite =92; //应答好友邀请
 IDUM_GATEE = 999; // client request end
 
 //----------------------------------------
@@ -58,7 +60,10 @@ IDUM_Ranks = 1070; // 排名列表
 IDUM_FightLikes = 1071; // 战斗结束是否喜欢列表
 IDUM_TopMsg =1080; //热门留言
 IDUM_MsgList =1081;// 留言列表
-
+IDUM_Friends =1090; //好友列表
+IDUM_AddFriend=1091; //添加好友
+IDUM_AddInvite=1092; //添加邀请
+IDUM_DelInvite=1093; //删除邀请
 IDUM_CLIE =1999; // to client end
 }
 
@@ -197,4 +202,32 @@ message UM_MsgList {
     optional uint32 range1=2;//从第几到第几，从0开始
     optional uint32 range2=3;
     repeated msg_info list=4;
+}
+
+// friend
+message UM_GetFriend {
+}
+
+message UM_Friends {
+    repeated friend_info fris=1; // 好友列表
+    repeated friend_info frisin=2; // 收到好友邀请列表
+}
+message UM_ResonseInvite {
+    optional int32 ok=1;// 1:答应 0:拒绝
+    optional uint32 roleid=2; // 对象
+}
+message UM_AddFriend {
+    optional int32 type=1; // 1:你同意添加info 2:info同意添加你
+    optional friend_info info=2; 
+}
+message UM_InviteFriend {
+    optional uint32 roleid=1; // 邀请谁
+}
+message UM_AddInvite {
+    optional int32 type=1; // 1:邀请发出  2:收到邀请
+    optional friend_info info=2;
+}
+message UM_DelInvite {
+    optional int32 type=1; // 1:拒绝info的邀请  2:info拒绝你邀请
+    optional friend_info info=2;
 }

@@ -16,4 +16,6 @@ rawset(_ENV, "SERR_Nogold", 22) -- 元宝不足
 rawset(_ENV, "SERR_Nomat", 30) -- 材料不足
 rawset(_ENV, "SERR_Norole", 31)-- 没有指定角色
 
-rawset(_ENV, "SERR_NotFriend", 80)-- 不是好友
+rawset(_ENV, "SERR_Notfriend", 80)-- 不是好友
+rawset(_ENV, "SERR_Friendyet", 81)-- 已经是好友
+rawset(_ENV, "SERR_HasInvite", 82)--已经邀请

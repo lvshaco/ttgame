@@ -8,6 +8,7 @@ local mydb = require "mydb"
 local myredis = require "myredis"
 local bag = require "bag"
 local rank = require "rank"
+local gamestate = require "gamestate"
 local tpexp = require "__tpexp"
 local tpduanwei = require "__tpduanwei"
 local tpduanwei_star = require "__tpduanwei_star"
@@ -290,6 +291,9 @@ end
 
 -- send
 function user:sendpackedmsg(msgid, packedmsg)
+    if self.status == gamestate.LOGOUT then
+        return
+    end
     shaco.debug('Msg send:', self.connid, msgid, #packedmsg)
     ctx.send2c(self.connid, spack("<I2", msgid)..packedmsg)
 end
@@ -297,15 +301,30 @@ end
 function user:send(msgid, v)
     local name = MSG_RESNAME[msgid]
     assert(name)
+    shaco.trace('Msg send:', tbl(v, name))
     self:sendpackedmsg(msgid, pb.encode(name, v))
 end
 
 function user:safecall(func)
     local r = func()
-    if self.status == LOGOUT then
+    if self.status == gamestate.LOGOUT then
         error(ctx.error_logout)
     end
     return r
+end
+
+function user:baseinfo()
+    local info = self.info
+    return {
+        roleid=info.roleid,
+        name=info.name,
+        icon=info.icon,
+        sex=info.sex,
+    }
+end
+
+function user:islogout()
+    return self.status == gamestate.LOGOUT
 end
 
 return user

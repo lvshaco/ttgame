@@ -21,6 +21,7 @@ REQ.__REG {
     "h_rank",
     "h_relation",
     "h_msg",
+    "h_friend",
 }
 
 local ctx = require "ctx"

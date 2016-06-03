@@ -83,3 +83,11 @@ message msg_base {
     optional uint32 createtime=3;
     optional string content=4; // 38个字
 }
+
+// 好友信息
+message friend_info {
+    optional uint32 roleid=1;
+    optional string name=2;
+    optional uint32 icon=3;
+    optional uint32 sex=4;
+}

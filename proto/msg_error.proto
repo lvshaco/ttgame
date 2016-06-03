@@ -17,5 +17,7 @@ SERR_Nogold = 22; // 元宝不足
 SERR_Nomat = 30; // 材料不足
 SERR_Norole = 31;// 没有指定角色
 
-SERR_NotFriend = 80;// 不是好友
+SERR_Notfriend = 80;// 不是好友
+SERR_Friendyet= 81;// 已经是好友
+SERR_HasInvite= 82;//已经邀请
 }

@@ -17,4 +17,7 @@ MSG_REQNAME[IDUM_GetTopMsg] = "UM_GetTopMsg"
 MSG_REQNAME[IDUM_GetMsg] = "UM_GetMsg"
 MSG_REQNAME[IDUM_SendMsg] = "UM_SendMsg"
 MSG_REQNAME[IDUM_LikeMsg] = "UM_LikeMsg"
+MSG_REQNAME[IDUM_GetFriend] = "UM_GetFriend"
+MSG_REQNAME[IDUM_InviteFriend] = "UM_InviteFriend"
+MSG_REQNAME[IDUM_ResponseInvite] = "UM_ResponseInvite"
 return MSG_REQNAME

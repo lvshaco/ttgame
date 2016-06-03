@@ -9,9 +9,9 @@ local REQ = {}
 
 REQ[IDUM_ReqRole] = function(ur, v)
     local roleid = v.roleid
-    local info = cache.query(roleid)
+    local info, err = cache.query(roleid)
     if not info then
-        return SERR_Norole
+        return err
     end
     shaco.trace(tbl(info, 'RoleInfo'))
     ur:send(IDUM_RoleInfo, {info=info})

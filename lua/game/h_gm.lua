@@ -12,7 +12,7 @@ REQ[IDUM_Gm] = function(ur, v)
 	if ur.gmlevel <= 0 then
 		return SERR_Illegal
 	end
-    shaco.trace("gm:", v.command)
+    shaco.trace("gm:", ur.info.roleid, v.command)
     local args = {}
     for v in string.gmatch(v.command, "[%g]+") do
         table.insert(args, v)
@@ -35,7 +35,6 @@ REQ[IDUM_Gm] = function(ur, v)
             if has_privilege(ur, cmd) then
                 local f = GM[cmd]
                 if f then
-                    shaco.trace("Gm:", ur.info.roleid, v.command)
                     ret = f(ur, select(2, table.unpack(args)))
                 else
                     local arg = {select(2, table.unpack(args))}

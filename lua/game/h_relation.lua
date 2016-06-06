@@ -13,7 +13,6 @@ REQ[IDUM_ReqRole] = function(ur, v)
     if not info then
         return err
     end
-    shaco.trace(tbl(info, 'RoleInfo'))
     ur:send(IDUM_RoleInfo, {info=info})
 end
 
@@ -88,7 +87,6 @@ REQ[IDUM_ReqFans] = function(ur, v)
         a.count = myredis.zcard('belike:'..a.roleid)
         l[#l+1] = a
     end
-    shaco.trace(tbl(l, "Fans"))
     ur:send(IDUM_Fans, {list=l})
 end
 

@@ -91,3 +91,28 @@ message friend_info {
     optional uint32 icon=3;
     optional uint32 sex=4;
 }
+
+// 比赛记录
+message game_record {
+    optional uint32 roleid=1;
+    optional string nickname=2;
+    optional uint32 icon=3;
+    optional uint32 sex=4;
+    optional uint32 time=5;
+    optional uint32 rank=6;
+    optional uint32 mass=7;
+    optional uint32 eat=8;
+    optional uint32 live=9;
+    optional uint32 copper=10;
+}
+
+message season_rank {
+    optional uint32 rank=1; // 排名,0为未上榜
+    optional uint32 duanwei=2; //段位
+    optional uint32 star=3; // 星级
+}
+
+message photo_data {
+    optional uint32 slot=1; //从1开始
+    optional string data=2;
+}

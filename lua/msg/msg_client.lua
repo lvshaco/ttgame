@@ -29,6 +29,12 @@ rawset(_ENV, "IDUM_LikeMsg", 83)--喜欢留言
 rawset(_ENV, "IDUM_GetFriend", 90) --请求好友列表
 rawset(_ENV, "IDUM_InviteFriend", 91) --邀请好友
 rawset(_ENV, "IDUM_ResponseInvite", 92) --应答好友邀请
+
+rawset(_ENV, "IDUM_ReqSeasonRank", 100) --赛季排名
+rawset(_ENV, "IDUM_ReqGameRecord", 101) --比赛记录
+rawset(_ENV, "IDUM_SetPhoto", 102) --设置照片
+rawset(_ENV, "IDUM_ReqPhotos", 103) --req照片
+
 rawset(_ENV, "IDUM_GATEE", 999) -- client request end
 
 ------------------------------------------
@@ -61,4 +67,8 @@ rawset(_ENV, "IDUM_Friends", 1090) --好友列表
 rawset(_ENV, "IDUM_AddFriend", 1091) --添加好友
 rawset(_ENV, "IDUM_AddInvite", 1092) --添加邀请
 rawset(_ENV, "IDUM_DelInvite", 1093) --删除邀请
+
+rawset(_ENV, "IDUM_SeasonRank", 1100) --赛季排名
+rawset(_ENV, "IDUM_GameRecord", 1101) --比赛记录
+rawset(_ENV, "IDUM_Photos", 1103)--照片列表
 rawset(_ENV, "IDUM_CLIE", 1999) -- to client end

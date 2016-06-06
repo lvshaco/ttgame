@@ -4,6 +4,7 @@ local userpool = require "userpool"
 local ctx = require "ctx"
 local tbl = require "tbl"
 local relation = require "relation"
+local fight = require "fight"
 
 local nodelogic = {}
 
@@ -37,6 +38,7 @@ function nodelogic.dispatch(connid, msgid, msg)
         for i=1, #ranks do
             ranks[i] = math.floor(ranks[i])
         end
+        local now = shaco.now()//1000
         for k, v in ipairs(roles) do
             local roleid = math.floor(v.roleid)
             local ur = userpool.find_byid(roleid)
@@ -49,11 +51,20 @@ function nodelogic.dispatch(connid, msgid, msg)
                 ur:setduanwei(v.rank)
                 ur:syncrole()
                 ur:db_flush()
+                fight.record(roleid, {
+                    roleid=roleid,
+                    nickname=v.name, --
+                    icon=ur.info.icon,
+                    sex=ur.info.sex,
+                    time=now, --
+                    rank=v.rank,
+                    mass=v.mass,
+                    eat=v.eat,
+                    live=v.live, --
+                    copper=v.copper,
+                })
                 local l1 = relation.mhas(roleid, 'attention', ranks)
                 local l2 = relation.mhas(roleid, 'like', ranks)
-                print("role fightlikes:", roleid)
-                print(tbl(l1))
-                print(tbl(l2))
                 ur:send(IDUM_FightLikes, {attentions=l1, likes=l2})
             end
         end

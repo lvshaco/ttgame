@@ -2,6 +2,8 @@ local shaco = require "shaco"
 local ctx = require "ctx"
 local nodepool = require "nodepool"
 local noderpc = require "noderpc"
+local myredis = require "myredis"
+local fight = require "fight"
 
 local REQ = {}
 
@@ -47,6 +49,12 @@ REQ[IDUM_ReqLoginFight] = function(ur, v)
     end
 
     ur:send(IDUM_LoginFightKey, {serverid=serverid, key=key})
+end
+
+REQ[IDUM_ReqGameRecord] = function(ur, v)
+    local myid = ur.info.roleid
+    local l = fight.getlist(myid)
+    ur:send(IDUM_GameRecord, {list=l})
 end
 
 return REQ

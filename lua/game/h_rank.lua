@@ -31,7 +31,7 @@ REQ[IDUM_ReqRanks] = function(ur, v)
     local now = shaco.now()//1000
     local last = rank.lastdatekey(typ, subt, now)
     
-    local r = myredis.zrevrange(rdkey, 0, rank.MAX_RANK-1, 'withscores')
+    local r = myredis.zrevrange(rdkey, 0, 20-1, 'withscores')
     local l = {}
     for i=1, #r//2 do
         local roleid = tonumber(r[i*2-1])
@@ -48,8 +48,13 @@ REQ[IDUM_ReqRanks] = function(ur, v)
         end
         l[#l+1] = a
     end
-    shaco.trace(tbl(l, "Ranks"))
     ur:send(IDUM_Ranks, {list=l})
+end
+
+REQ[IDUM_ReqSeasonRank] = function(ur, v)
+    local myid = ur.info.roleid
+    local t = rank.getseasonrank(myid)
+    ur:send(IDUM_SeasonRank, {list=t})
 end
 
 return REQ

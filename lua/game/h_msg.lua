@@ -101,7 +101,6 @@ REQ[IDUM_GetTopMsg] = function(ur, v)
     for _, id in ipairs(top) do
         l[#l+1] = query_msg(key, likekey, id)
     end
-    shaco.trace(tbl(l, 'TopMsg'))
     ur:send(IDUM_TopMsg, {
         roleid=targetid,
         list=l})
@@ -119,7 +118,6 @@ REQ[IDUM_GetMsg] = function(ur, v)
     for _,id in ipairs(ids) do
         l[#l+1] = query_msg(key, likekey, id)
     end
-    shaco.trace(tbl(l, 'GetMsg'))
     ur:send(IDUM_MsgList, {
         roleid=targetid,
         range1=v.range1,

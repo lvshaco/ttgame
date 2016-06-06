@@ -5,7 +5,7 @@ local util = require "util"
 
 local rank = {}
 
-local MAX_RANK = 20
+local MAX_RANK = 1000
 local RANKT = {
 'power', 'fans', 'belike', 'flower', 'kill',
 }
@@ -37,19 +37,54 @@ local function lastdatekey(typ, subt, now)
     end
     if last then
         last = os.date('%Y%m%d', last)
-        return rank.curkey(typ, subt)..':'..last
+        return rank.curkey(typ, subt)..':'..last, last
     end
 end
 
+local function enc_power(v1,v2)
+    return (v1<<8) | v2
+end
+local function dec_power(score)
+    return (score>>8)&0xff, score&0xff
+end
+
+local function rankscore(key, roleid)
+    local rs= {rank=0, duanwei=0,star=0}
+    local r = myredis.zrevrank(key, roleid)
+    if r then
+        rs.rank=r+1
+    end
+    local r = myredis.zscore(key, roleid)
+    if r then
+        rs.duanwei, rs.star = dec_power(r)
+    end
+    return rs
+end
+
+function rank.getseasonrank(roleid)
+    local typ = 'power'
+    local subt = 'month'
+    local now = shaco.now()//1000
+    local key1, last1 = lastdatekey(typ, subt, now)
+    local key2, last2 = lastdatekey(typ, subt, last1)
+    local key3, last3 = lastdatekey(typ, subt, last2)
+
+    local t = {}
+    t[#t+1]= rankscore(key1, roleid)
+    t[#t+1]= rankscore(key2, roleid)
+    t[#t+1]= rankscore(key3, roleid)
+    return t
+end
+
 function rank.setpower(roleid, v1, v2)
-    local score = (v1<<8) | v2
+    local score = enc_power(v1,v2)
     rank.setscore(roleid, 'power', score)
 end
 
 function rank.getpower(roleid)
     local score = rank.getscore(roleid, 'power')
     if score then
-        return (score>>8)&0xff, score&0xff
+        return dec_power(score)
     else 
         return 0, 0
     end
@@ -75,7 +110,6 @@ function rank.addscore(roleid, typ, score)
         myredis.zremrangebyrank(key, MAX_RANK, -1)
     end
 end
-
 
 local function reset(typ)
     local now = shaco.now()//1000

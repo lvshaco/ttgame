@@ -32,6 +32,12 @@ IDUM_LikeMsg =83;//喜欢留言
 IDUM_GetFriend = 90; //请求好友列表
 IDUM_InviteFriend =91; //邀请好友
 IDUM_ResponseInvite =92; //应答好友邀请
+
+IDUM_ReqSeasonRank=100; //赛季排名
+IDUM_ReqGameRecord=101; //比赛记录
+IDUM_SetPhoto=102; //设置照片
+IDUM_ReqPhotos=103; //req照片
+
 IDUM_GATEE = 999; // client request end
 
 //----------------------------------------
@@ -64,6 +70,10 @@ IDUM_Friends =1090; //好友列表
 IDUM_AddFriend=1091; //添加好友
 IDUM_AddInvite=1092; //添加邀请
 IDUM_DelInvite=1093; //删除邀请
+
+IDUM_SeasonRank=1100; //赛季排名
+IDUM_GameRecord=1101; //比赛记录
+IDUM_Photos=1103;//照片列表
 IDUM_CLIE =1999; // to client end
 }
 
@@ -230,4 +240,25 @@ message UM_AddInvite {
 message UM_DelInvite {
     optional int32 type=1; // 1:拒绝info的邀请  2:info拒绝你邀请
     optional friend_info info=2;
+}
+
+message UM_ReqSeasonRank {
+}
+message UM_SeasonRank {
+    repeated season_rank list=1; //第一个元素是最近赛季，依次排列
+}
+
+message UM_ReqGameRecord {
+}
+message UM_GameRecord {
+    repeated game_record list=1; // 记录list
+}
+
+message UM_SetPhoto {
+    optional photo_data data=1;
+}
+message UM_ReqPhotos {
+}
+message UM_Photos {
+    repeated photo_data list=1;
 }

@@ -1,6 +1,8 @@
 local shaco = require "shaco"
 local tbl = require "tbl"
 local tpcompose = require "__tpcompose"
+local sfmt = string.format
+local myredis = require "myredis"
 
 local REQ = {}
 
@@ -51,6 +53,29 @@ REQ[IDUM_HeroLevelup] = function(ur)
     ur:refreshbag()
 
     ur:send(IDUM_Hero, {heroid=heroid, herolevel=level})
+end
+
+REQ[IDUM_SetPhoto] = function(ur, v)
+    local myid = ur.info.roleid
+    local slot = v.data.slot
+    local data = v.data.data
+    if slot <1 or slot > 10 then
+        return SERR_Arg
+    end
+    myredis.hmset('photo:'..myid, slot, data)
+end
+
+REQ[IDUM_ReqPhotos] = function(ur, v)
+    local myid = ur.info.roleid
+    local t = myredis.hmget('photo:'..myid, 1,2,3,4,5,6,7,8,9,10)
+    local l = {}
+    for k, v in pairs(t) do
+        l[#l+1] = {
+            slot = k,
+            data = v,
+        }
+    end
+    ur:send(IDUM_Photos, {list=l})
 end
 
 return REQ

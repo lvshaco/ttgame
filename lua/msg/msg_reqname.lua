@@ -20,4 +20,8 @@ MSG_REQNAME[IDUM_LikeMsg] = "UM_LikeMsg"
 MSG_REQNAME[IDUM_GetFriend] = "UM_GetFriend"
 MSG_REQNAME[IDUM_InviteFriend] = "UM_InviteFriend"
 MSG_REQNAME[IDUM_ResponseInvite] = "UM_ResponseInvite"
+MSG_REQNAME[IDUM_ReqSeasonRank] = "UM_ReqSeasonRank"
+MSG_REQNAME[IDUM_ReqGameRecord] = "UM_ReqGameRecord"
+MSG_REQNAME[IDUM_SetPhoto] = "UM_SetPhoto"
+MSG_REQNAME[IDUM_ReqPhotos] = "UM_ReqPhotos"
 return MSG_REQNAME

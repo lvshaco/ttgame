@@ -3,7 +3,7 @@ function REQ.__REG(l)
     for _, h in ipairs(l) do
         assert(string.sub(h, 1, 2) == "h_")
         local t = require(h)
-        assert(type(t) == "table")
+        assert(type(t) == "table", h)
         for id, fun in pairs(t) do
             assert(type(id) == "number" or type(id) == "string")
             assert(type(fun) == "function")

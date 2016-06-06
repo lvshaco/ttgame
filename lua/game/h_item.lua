@@ -11,7 +11,6 @@ REQ[IDUM_ReqShop] = function(ur, v)
             tpltid = v.id,
         }
     end
-    shaco.trace(tbl(items, "shop"))
     ur:send(IDUM_Shop, {list=items})
 end
 

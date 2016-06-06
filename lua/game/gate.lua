@@ -36,8 +36,9 @@ function gate.start(conf)
             --    return string.format("%02X ", string.byte(c))
             --end)
             --print(str)
-            local v = assert(pb.decode(MSG_REQNAME[msgid], data))
-            shaco.trace('Msg:', tbl(v, msgid))
+            local msgn = MSG_REQNAME[msgid]
+            local v = assert(pb.decode(msgn, data))
+            shaco.trace('Msg:', tbl(v, msgn))
             shaco.fork(logic.dispatch, id, msgid, v)
         end
         local ok, err = pcall(function() -- todo replace to pcall

@@ -212,7 +212,7 @@ message UM_Friends {
     repeated friend_info fris=1; // 好友列表
     repeated friend_info frisin=2; // 收到好友邀请列表
 }
-message UM_ResonseInvite {
+message UM_ResponseInvite {
     optional int32 ok=1;// 1:答应 0:拒绝
     optional uint32 roleid=2; // 对象
 }

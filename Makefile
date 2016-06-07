@@ -1,4 +1,4 @@
-.PHONY: all clean res convres proto client 
+.PHONY: all clean res convres proto client excel
 
 all: proto
 
@@ -55,6 +55,10 @@ client:
 		pbh/*.pb.cc \
 		pbh/*.pb.h \
 		proto/*.proto \
+		excel/*.xlsx
+
+excel:
+	tar -zcf ~/excel.tgz \
 		excel/*.xlsx
 
 clean:

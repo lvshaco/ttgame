@@ -52,8 +52,8 @@ REQ[IDUM_ReqLoginFight] = function(ur, v)
 end
 
 REQ[IDUM_ReqGameRecord] = function(ur, v)
-    local myid = ur.info.roleid
-    local l = fight.getlist(myid)
+    local tarid = v.roleid
+    local l = fight.getlist(tarid)
     ur:send(IDUM_GameRecord, {list=l})
 end
 

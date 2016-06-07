@@ -45,34 +45,36 @@ local function enc_power(v1,v2)
     return (v1<<8) | v2
 end
 local function dec_power(score)
-    return (score>>8)&0xff, score&0xff
+    if score then
+        return (score>>8)&0xff, score&0xff
+    else
+        return 1, 0
+    end
 end
 
-local function rankscore(key, roleid)
-    local rs= {rank=0, duanwei=0,star=0}
+local function rankscore(key, roleid, season)
+    local rs= {rank=0, duanwei=0,star=0, season=season}
     local r = myredis.zrevrank(key, roleid)
     if r then
         rs.rank=r+1
     end
     local r = myredis.zscore(key, roleid)
-    if r then
-        rs.duanwei, rs.star = dec_power(r)
-    end
+    rs.duanwei, rs.star = dec_power(r)
     return rs
 end
 
 function rank.getseasonrank(roleid)
+    local t = {}
     local typ = 'power'
     local subt = 'month'
-    local now = shaco.now()//1000
-    local key1, last1 = lastdatekey(typ, subt, now)
-    local key2, last2 = lastdatekey(typ, subt, last1)
-    local key3, last3 = lastdatekey(typ, subt, last2)
-
-    local t = {}
-    t[#t+1]= rankscore(key1, roleid)
-    t[#t+1]= rankscore(key2, roleid)
-    t[#t+1]= rankscore(key3, roleid)
+    local last = shaco.now()//1000
+    local key
+    local season = ctx.season - 1
+    while season > 0 do
+        key, last = lastdatekey(typ, subt, last)
+        t[#t+1]=rankscore(key, roleid, season)
+        season = season-1
+    end
     return t
 end
 
@@ -83,11 +85,18 @@ end
 
 function rank.getpower(roleid)
     local score = rank.getscore(roleid, 'power')
-    if score then
-        return dec_power(score)
-    else 
-        return 0, 0
+    return dec_power(score)
+end
+
+function rank.getpower_lastseason(roleid)
+    local last_season = ctx.season - 1
+    if last_season <= 0 then
+        return 1, 0
     end
+    local now = shaco.now()//1000
+    local key, last = lastdatekey('power', 'month', now)
+    local score = myredis.zscore(key, roleid)
+    return dec_power(score)
 end
 
 function rank.getscore(roleid, typ)

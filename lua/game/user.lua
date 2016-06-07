@@ -22,6 +22,28 @@ local user = {
 }
 user.__index = user
 
+local function headflower(ur)
+    local myid = ur.info.roleid
+
+    local season = ctx.season-1
+    if season >=1 and season <= 9 then
+        local dw = rank.getpower_lastseason(myid)
+        if dw >= 10 then -- 至少大师
+            local itemid = 600 + season
+            ur:adduniqueitem(itemid)
+        end
+    end
+    local now = shaco.now()//1000
+    if os.date("%Y%m%d", now) == "20160809" then -- 七夕
+        ur:adduniqueitem(610)
+    elseif os.date("%Y%m%d", now) == "20170211" then -- 元宵
+        ur:adduniqueitem(611)
+    elseif os.date("%Y%m%d", now) == "20170128" then -- 春节
+        ur:adduniqueitem(612)
+    end
+    ur:refreshbag()
+end
+
 function user.new(connid, status)
     local self = {
         connid = connid,
@@ -74,11 +96,13 @@ function user:init(roleid, gmlevel, info, items)
     self.gmlevel = gmlevel
     self.bag = bag.new(items and items.list or nil)
 
+    headflower(self)
+
     self:db_flush()
 end
 
 function user:entergame()
-	self:send(IDUM_EnterGame, {info=self.info})
+	self:send(IDUM_EnterGame, {info=self.info, servertime=shaco.now()//1000})
 
     local items = {}
     self.bag:foreach(function(v)
@@ -99,6 +123,7 @@ function user:update(now)
 end
 
 function user:onchangeday()
+    headflower(self)
 end
 
 -- db
@@ -286,6 +311,17 @@ function user:refreshbag()
         shaco.trace(tbl(items, "refreshbag"))
         self:db_tagdirty(self.DB_ITEM)
         self:send(IDUM_ItemUpdate, {list=items})
+    end
+end
+
+function user:hasitem(itemid)
+    -- todo
+    return self.bag:has(itemid, 1)
+end
+
+function user:adduniqueitem(itemid)
+    if not self:hasitem(itemid) then
+        self.bag:add(itemid, 1)
     end
 end
 

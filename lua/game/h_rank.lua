@@ -52,8 +52,8 @@ REQ[IDUM_ReqRanks] = function(ur, v)
 end
 
 REQ[IDUM_ReqSeasonRank] = function(ur, v)
-    local myid = ur.info.roleid
-    local t = rank.getseasonrank(myid)
+    local tarid = v.roleid
+    local t = rank.getseasonrank(tarid)
     ur:send(IDUM_SeasonRank, {list=t})
 end
 

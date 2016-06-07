@@ -33,8 +33,22 @@ local logic = {
     interval = 1000,
 }
 
+local function calc_season(now)
+    local season = 1 
+    local last = util.lastmonthbase(now)
+    local openbase = util.lastmonthbase(ctx.server_opentime)
+    while last >= openbase do
+        season = season+1
+        assert(season < 24)
+        last = util.lastmonthbase(last)
+    end
+    ctx.season = season
+    shaco.info("season:", season)
+end
+
 function logic.init(conf)
-    math.randomseed(shaco.now())
+    local now = shaco.now()//1000
+    math.randomseed(now)
 
     local msgn2id = {}
     for id, v in pairs(MSG_REQNAME) do
@@ -44,25 +58,34 @@ function logic.init(conf)
 
     mydb.init(conf.db)
     myredis.init(conf.rd)
+
+    -- server_opentime
     local opentime = tonumber(myredis.get('server_opentime'))
     if not opentime then
-        opentime = shaco.now()//1000
+        opentime = now
         myredis.set('server_opentime', opentime)
     end
     ctx.server_opentime = opentime
-    
+    shaco.info("server_opentime:", os.date("%Y%m%d %H%M%S", opentime))
+
+    -- season
+    calc_season(now)
+
     rank.init()
 end
 
 local __lastday = util.msecond2day(shaco.now())
 
 function logic.update()
-    local now = shaco.now()
+    local now = shaco.now()//1000
 	local nowday = util.second2day(now)
     local daychanged
     if nowday ~= __lastday then
         __lastday = nowday
         daychanged = true
+    end
+    if daychanged then
+        calc_season(now)
     end
 	userpool.update(now, daychanged)
 	rank.update(now, daychanged)

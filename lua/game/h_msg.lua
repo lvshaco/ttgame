@@ -91,7 +91,8 @@ end
 
 REQ[IDUM_GetTopMsg] = function(ur, v)
     local targetid = v.roleid
-    if not friend.has(ur, targetid) then
+    local myid = ur.info.roleid
+    if myid ~= targetid and not friend.has(ur, targetid) then
         return SERR_Notfriend
     end
     local key = "msg:"..targetid
@@ -108,7 +109,8 @@ end
 
 REQ[IDUM_GetMsg] = function(ur, v)
     local targetid = v.roleid
-    if not friend.has(ur, targetid) then
+    local myid = ur.info.roleid
+    if myid ~= targetid and not friend.has(ur, targetid) then
         return SERR_Notfriend
     end
     local key = "msg:"..targetid

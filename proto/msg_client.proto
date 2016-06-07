@@ -87,6 +87,7 @@ message UM_Logout {
 }
 message UM_EnterGame {
     optional role_info info=1;
+    optional uint32 servertime=2; //服务器当前时间
 }
 
 message UM_SyncRole {
@@ -243,12 +244,14 @@ message UM_DelInvite {
 }
 
 message UM_ReqSeasonRank {
+    optional uint32 roleid=1; // 
 }
 message UM_SeasonRank {
-    repeated season_rank list=1; //第一个元素是最近赛季，依次排列
+    repeated season_rank list=1; //之前所有赛季
 }
 
 message UM_ReqGameRecord {
+    optional uint32 roleid=1; // 
 }
 message UM_GameRecord {
     repeated game_record list=1; // 记录list

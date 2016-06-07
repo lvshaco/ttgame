@@ -110,6 +110,7 @@ message season_rank {
     optional uint32 rank=1; // 排名,0为未上榜
     optional uint32 duanwei=2; //段位
     optional uint32 star=3; // 星级
+    optional uint32 season=4;//赛季
 }
 
 message photo_data {

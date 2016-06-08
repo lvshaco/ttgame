@@ -42,7 +42,6 @@ function login.login(connid, v)
     if not v then
         newrole = true
         roleid = myredis.urcall(ur, 'incr', 'role_uniqueid')
-        roleid = tonumber(roleid)
         gmlevel = 0
         v = {roleid=roleid, gmlevel=gmlevel}
         myredis.urcall(ur, 'set', 'acc:'..acc,
@@ -72,6 +71,10 @@ function login.login(connid, v)
     ur:init(roleid, gmlevel, info, items)
     
     userpool.add_byid(roleid, ur)
+    local name = ur.info.name
+    if name ~= "" then
+        userpool.add_byname(name, ur)
+    end
     ur.status = gamestate.GAME
     ur:entergame()
     shaco.trace("user login ok:", connid, acc, roleid)

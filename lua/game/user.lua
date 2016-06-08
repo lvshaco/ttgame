@@ -62,7 +62,7 @@ function user:init(roleid, gmlevel, info, items)
     if not info then
         info = {
             roleid = roleid,
-            name = "testname",
+            name = "",
             create_time=0,
             icon=1,
             sex=0,

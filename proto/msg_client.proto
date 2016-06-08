@@ -38,6 +38,11 @@ IDUM_ReqGameRecord=101; //比赛记录
 IDUM_SetPhoto=102; //设置照片
 IDUM_ReqPhotos=103; //req照片
 
+IDUM_SetName=110; // 设置姓名
+IDUM_SetSex=111; // 设置性别
+IDUM_SetDesc=112; // 设置个人说明
+IDUM_SetGeo=113; // 设置地理位置
+
 IDUM_GATEE = 999; // client request end
 
 //----------------------------------------
@@ -231,8 +236,11 @@ message UM_AddFriend {
     optional int32 type=1; // 1:你同意添加info 2:info同意添加你
     optional friend_info info=2; 
 }
+
+// 优先使用roleid，通过输入框的画使用name（可以是roleid）
 message UM_InviteFriend {
     optional uint32 roleid=1; // 邀请谁
+    optional string name=2; // 邀请谁(roleid也可以作为输入名字使用)
 }
 message UM_AddInvite {
     optional int32 type=1; // 1:邀请发出  2:收到邀请
@@ -242,7 +250,7 @@ message UM_DelInvite {
     optional int32 type=1; // 1:拒绝info的邀请  2:info拒绝你邀请
     optional friend_info info=2;
 }
-
+//
 message UM_ReqSeasonRank {
     optional uint32 roleid=1; // 
 }
@@ -264,4 +272,19 @@ message UM_ReqPhotos {
 }
 message UM_Photos {
     repeated photo_data list=1;
+}
+
+// 个人中心
+message UM_SetName {
+    optional string name=1;
+}
+message UM_SetSex {
+    optional uint32 sex=1; // see SEX_T
+}
+message UM_SetDesc {
+    optional string desc=1;
+}
+message UM_SetGeo {
+    optional uint32 province=1;
+    optional uint32 city=2;
 }

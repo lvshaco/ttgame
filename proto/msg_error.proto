@@ -12,6 +12,10 @@ SERR_Arg =5; // 参数错误
 SERR_State =6; // 状态错误
 SERR_Remote =7; // 远端异常
 
+SERR_InvalidName=10; // 无效名字
+SERR_ExistName=11; // 存在的名字
+SERR_NameChanged=12;//名字已经改过
+
 SERR_Nocopper = 21; // 铜币不足
 SERR_Nogold = 22; // 元宝不足
 SERR_Nomat = 30; // 材料不足
@@ -20,4 +24,5 @@ SERR_Norole = 31;// 没有指定角色
 SERR_Notfriend = 80;// 不是好友
 SERR_Friendyet= 81;// 已经是好友
 SERR_HasInvite= 82;//已经邀请
+
 }

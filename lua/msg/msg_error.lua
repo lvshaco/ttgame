@@ -11,6 +11,10 @@ rawset(_ENV, "SERR_Arg", 5) -- 参数错误
 rawset(_ENV, "SERR_State", 6) -- 状态错误
 rawset(_ENV, "SERR_Remote", 7) -- 远端异常
 
+rawset(_ENV, "SERR_InvalidName", 10) -- 无效名字
+rawset(_ENV, "SERR_ExistName", 11) -- 存在的名字
+rawset(_ENV, "SERR_NameChanged", 12)--名字已经改过
+
 rawset(_ENV, "SERR_Nocopper", 21) -- 铜币不足
 rawset(_ENV, "SERR_Nogold", 22) -- 元宝不足
 rawset(_ENV, "SERR_Nomat", 30) -- 材料不足
@@ -19,3 +23,4 @@ rawset(_ENV, "SERR_Norole", 31)-- 没有指定角色
 rawset(_ENV, "SERR_Notfriend", 80)-- 不是好友
 rawset(_ENV, "SERR_Friendyet", 81)-- 已经是好友
 rawset(_ENV, "SERR_HasInvite", 82)--已经邀请
+

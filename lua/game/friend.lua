@@ -59,10 +59,15 @@ local function addfriend(ur, objinfo, obj)
     end
 end
 
-function friend.invite(ur, roleid)
-    local objinfo, obj = cache.query(roleid)
+function friend.invite(ur, roleid, name)
+    local objinfo, obj = cache.query(roleid, name)
     if not objinfo then
         return obj -- err
+    end
+    local myid = ur.info.roleid
+    roleid = objinfo.roleid
+    if roleid == myid then
+        return SERR_Arg
     end
     if friend.has(ur, roleid) then
         return SERR_Friendyet
@@ -70,7 +75,6 @@ function friend.invite(ur, roleid)
     if friend.hasinviteout(ur, roleid) then
         return SERR_HasInvite
     end
-    local myid = ur.info.roleid
     if not friend.hasinviteme(ur, roleid) then
         myredis.sadd('friendsout:'..myid, roleid)
         myredis.sadd('friendsin:'..roleid, myid)

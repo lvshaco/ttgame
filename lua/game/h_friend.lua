@@ -15,7 +15,7 @@ end
 
 REQ[IDUM_InviteFriend] = function(ur, v)
     local roleid = v.roleid
-    local err = friend.invite(ur, v.roleid)
+    local err = friend.invite(ur, v.roleid, v.name)
     return err or SERR_OK
 end
 

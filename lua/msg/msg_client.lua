@@ -35,6 +35,11 @@ rawset(_ENV, "IDUM_ReqGameRecord", 101) --比赛记录
 rawset(_ENV, "IDUM_SetPhoto", 102) --设置照片
 rawset(_ENV, "IDUM_ReqPhotos", 103) --req照片
 
+rawset(_ENV, "IDUM_SetName", 110) -- 设置姓名
+rawset(_ENV, "IDUM_SetSex", 111) -- 设置性别
+rawset(_ENV, "IDUM_SetDesc", 112) -- 设置个人说明
+rawset(_ENV, "IDUM_SetGeo", 113) -- 设置地理位置
+
 rawset(_ENV, "IDUM_GATEE", 999) -- client request end
 
 ------------------------------------------

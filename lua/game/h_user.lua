@@ -3,6 +3,8 @@ local tbl = require "tbl"
 local tpcompose = require "__tpcompose"
 local sfmt = string.format
 local myredis = require "myredis"
+local userpool = require "userpool"
+local cache = require "cache"
 
 local REQ = {}
 
@@ -76,6 +78,56 @@ REQ[IDUM_ReqPhotos] = function(ur, v)
         }
     end
     ur:send(IDUM_Photos, {list=l})
+end
+
+REQ[IDUM_SetName] = function(ur, v)
+    if ur.info.name and ur.info.name ~= "" then
+        return SERR_NameChanged
+    end
+    local name = v.name
+    local err = cache.checkname(name)
+    if err ~= SERR_OK then
+        return err
+    end
+    local oldacc = ur.acc
+    local old = ur.info.name
+    local myid = ur.info.roleid
+
+    userpool.changename(ur, name)
+    ur:db_tagdirty(ur.DB_ROLE)
+    ur:db_flush()
+
+    myredis.call('rename', 'acc:'..oldacc, 'acc:'..name)
+    myredis.set('rolen2id:'..name, myid)
+    myredis.del('rolen2id:'..old)
+    
+    ur:syncrole()
+end
+
+REQ[IDUM_SetSex] = function(ur, v)
+    if v.sex ~= 0 and v.sex ~= 1 then
+        return SERR_Arg
+    end
+    ur.info.sex = v.sex
+    ur:db_tagdirty(ur.DB_ROLE)
+    ur:syncrole()
+end
+
+REQ[IDUM_SetDesc] = function(ur, v)
+    local desc = v.desc
+    if #desc <= 0 or #desc > 128 then
+        return SERR_Arg
+    end
+    ur.info.describe = desc
+    ur:db_tagdirty(ur.DB_ROLE)
+    ur:syncrole()
+end
+
+REQ[IDUM_SetGeo] = function(ur, v)
+    ur.info.province = v.province
+    ur.info.city = v.city
+    ur:db_tagdirty(ur.DB_ROLE)
+    ur:syncrole()
 end
 
 return REQ

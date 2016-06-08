@@ -24,4 +24,8 @@ MSG_REQNAME[IDUM_ReqSeasonRank] = "UM_ReqSeasonRank"
 MSG_REQNAME[IDUM_ReqGameRecord] = "UM_ReqGameRecord"
 MSG_REQNAME[IDUM_SetPhoto] = "UM_SetPhoto"
 MSG_REQNAME[IDUM_ReqPhotos] = "UM_ReqPhotos"
+MSG_REQNAME[IDUM_SetName] = "UM_SetName"
+MSG_REQNAME[IDUM_SetSex] = "UM_SetSex"
+MSG_REQNAME[IDUM_SetDesc] = "UM_SetDesc"
+MSG_REQNAME[IDUM_SetGeo] = "UM_SetGeo"
 return MSG_REQNAME

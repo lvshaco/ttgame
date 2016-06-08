@@ -8,7 +8,7 @@ local sfmt = string.format
 local conn2user = {}
 local acc2user = {}
 local oid2user = {} -- US_GAME state
---local name2user = {} -- US_GAME state
+local name2user = {} -- US_GAME state
 local userpool = {}
 
 function userpool.find_byconnid(connid)
@@ -41,6 +41,20 @@ end
 
 function userpool.add_byname(name, ur)
     name2user[name] = ur
+end
+function userpool.changename(ur, name)
+    local oldacc = ur.acc
+    local oldname = ur.info.name
+    local old = name2user[oldname] 
+    if old then
+        assert(old == ur)
+        name2user[oldname] = nil
+    end
+    ur.info.name = name
+    name2user[name] = ur
+
+    acc2user[oldacc] = nil
+    acc2user[name] = ur
 end
 
 function userpool.add_byid(roleid, ur)

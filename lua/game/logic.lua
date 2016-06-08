@@ -59,6 +59,15 @@ function logic.init(conf)
     mydb.init(conf.db)
     myredis.init(conf.rd)
 
+    -- roleid
+    local startid = 1000000
+    local roleid = myredis.incr('role_uniqueid')
+    if roleid < startid then
+        roleid = startid
+        myredis.set('role_uniqueid', roleid)
+    end
+    shaco.info("role_uniqueid:", roleid)
+
     -- server_opentime
     local opentime = tonumber(myredis.get('server_opentime'))
     if not opentime then
@@ -106,6 +115,7 @@ function logic.dispatch(connid, msgid, v)
         local f = assert(REQ[msgid], "Invalid msg id")
         local ur = userpool.find_byconnid(connid)
         assert(ur, "Not found user")
+        assert(ur.status == gamestate.GAME)
         local ok, err = xpcall(f, traceback, ur, v)
         if not ok then
             shaco.error(err)
@@ -115,9 +125,7 @@ function logic.dispatch(connid, msgid, v)
             ur:send(IDUM_Response, {msgid=msgid, err=err})
             shaco.trace("Response:", err)
         end
-        if ur.status == gamestate.GAME then
-            ur:db_flush()
-        end
+        ur:db_flush()
     end
 end
 

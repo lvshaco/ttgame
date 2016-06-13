@@ -5,6 +5,14 @@ local tpitem = require "__tpitem"
 local bag = {}
 bag.__index = bag
 
+function bag.genitem()
+  return {
+    tpltid = 0,
+    stack = 0,
+    create_time = 0,
+  }
+end
+
 function bag.new(data)
     local items = {}
     if data then
@@ -58,7 +66,7 @@ function bag:add(id, stack)
     return true
 end
 
-function bag:remove(id, stack)
+function bag:remove(id, stack, back)
     local item = self.items[id]
     if not item then
         return false
@@ -67,9 +75,16 @@ function bag:remove(id, stack)
     if old < stack then
         return false
     end
-    item.info.stack = old-stack
+    item.info.stack = old-stack -- 0不移除
     item.up = true
     self.up = true
+    if back then
+      return {
+        tpltid = item.info.tpltid,
+        stack = stack,
+        create_time = item.info.create_time,
+      }
+    end
     return true
 end
 
@@ -83,6 +98,39 @@ function bag:has(id, stack)
         return false
     end
     return true
+end
+
+function bag:get(id)
+  local item = self.items[id]
+  if not item then
+    return nil
+  end
+  if item.info.stack == 0 then
+    return nil
+  end
+  return item
+end
+
+function bag:replace(v)
+  local id = v.tpltid
+  local tp = tpitem[id]
+  if not tp then
+      shaco.error("bag.replace no tplt:", id)
+      return false
+  else
+    local info = {
+      tpltid = id,
+      stack = v.stack,
+      create_time = v.create_time,
+    }
+      self.items[id] = {
+          up = true,
+          tp = tp,
+          info = info,
+      }
+  end
+  self.up = true
+  return true
 end
 
 function bag:refresh(func)

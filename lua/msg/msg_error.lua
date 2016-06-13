@@ -10,6 +10,8 @@ rawset(_ENV, "SERR_Illegal", 4)
 rawset(_ENV, "SERR_Arg", 5) -- 参数错误
 rawset(_ENV, "SERR_State", 6) -- 状态错误
 rawset(_ENV, "SERR_Remote", 7) -- 远端异常
+rawset(_ENV, "SERR_Noacc", 8) -- 无此账号
+rawset(_ENV, "SERR_Passwd", 9) -- 密码错误
 
 rawset(_ENV, "SERR_InvalidName", 10) -- 无效名字
 rawset(_ENV, "SERR_ExistName", 11) -- 存在的名字

@@ -12,6 +12,7 @@ local login = {}
 
 function login.login(connid, v)
     local acc = v.acc
+    local passwd = v.passwd
     shaco.trace("user login ...", connid, acc)
     local ur 
     ur = userpool.find_byconnid(connid)
@@ -35,24 +36,30 @@ function login.login(connid, v)
     local newrole
     local roleid
     local info
-    local v = myredis.urcall(ur, 'get', 'acc:'..acc)
-    if v then
-        v = pb.decode('acc_info', v)
+    local ai = myredis.urcall(ur, 'get', 'acc:'..acc)
+    if ai then
+        ai = pb.decode('acc_info', ai)
+        if ai then
+          if ai.passwd ~= passwd then
+            error("Invalid passwd:", passwd)
+            return SERR_Passwd
+          end
+        end
     end
-    if not v then
+    if not ai then
         newrole = true
         roleid = myredis.urcall(ur, 'incr', 'role_uniqueid')
         gmlevel = 0
-        v = {roleid=roleid, gmlevel=gmlevel}
+        ai = {roleid=roleid, gmlevel=gmlevel}
         myredis.urcall(ur, 'set', 'acc:'..acc,
-            pb.encode('acc_info', v))
+            pb.encode('acc_info', ai))
         myredis.urcall(ur, 'set', 'role:'..roleid, 
             pb.encode('role_info', {}))
         shaco.trace("new role:", acc, roleid)
     else
         newrole = false
-        roleid = v.roleid
-        gmlevel = v.gmlevel
+        roleid = ai.roleid
+        gmlevel = ai.gmlevel
         info = myredis.urcall(ur, 'get', 'role:'..roleid)
         if info then
             info = pb.decode('role_info', info)

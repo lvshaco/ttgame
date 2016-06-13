@@ -11,6 +11,8 @@ SERR_Illegal =4;
 SERR_Arg =5; // 参数错误
 SERR_State =6; // 状态错误
 SERR_Remote =7; // 远端异常
+SERR_Noacc = 8; // 无此账号
+SERR_Passwd = 9; // 密码错误
 
 SERR_InvalidName=10; // 无效名字
 SERR_ExistName=11; // 存在的名字

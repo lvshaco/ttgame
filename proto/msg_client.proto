@@ -15,6 +15,10 @@ IDUM_Login = 10; // login
 IDUM_BuyItem = 20;
 IDUM_UseItem = 21;
 IDUM_ReqShop = 22; // 请求商城列表
+
+IDUM_UnequipItem = 23;//卸下装备
+IDUM_OpenBox = 24; // 开宝箱
+
 IDUM_HeroLevelup = 30; // 神兽升级
 
 IDUM_ReqServerList = 50;// 请求战斗服务器列表
@@ -38,7 +42,7 @@ IDUM_ReqGameRecord=101; //比赛记录
 IDUM_SetPhoto=102; //设置照片
 IDUM_ReqPhotos=103; //req照片
 
-IDUM_SetName=110; // 设置姓名
+IDUM_SetName=110; // 设置姓名(现在是注册)
 IDUM_SetSex=111; // 设置性别
 IDUM_SetDesc=112; // 设置个人说明
 IDUM_SetGeo=113; // 设置地理位置
@@ -59,6 +63,7 @@ IDUM_SyncRole = 1012; // 同步角色属性
 
 IDUM_ItemUpdate = 1020; // 物品更新
 IDUM_Shop = 1022; // 反馈商城列表 
+IDUM_EquipUpdate = 1023; //装备更新
 
 IDUM_Hero = 1030; // 神兽升级反馈
 
@@ -109,6 +114,16 @@ message UM_UseItem {
 message UM_ItemUpdate {
     repeated item_info list=1; // item_info::stack == 0表示此物品删除，否则更新stack值
 
+}
+message UM_UnequipItem {
+  optional int32 itemtype=1;//物品类型(itemtype对应role_info中item字段)
+}
+message UM_EquipUpdate {
+  optional int32 itemtype=1;//物品类型(itemtype对应role_info中item字段)
+  optional uint32 id=2;//物品id, 0表示卸下了，其他为装备上的物品id
+}
+message UM_OpenBox {
+  optional int32 type=1;//1: 木宝箱 2:豪华宝箱
 }
 
 // shop
@@ -276,7 +291,9 @@ message UM_Photos {
 
 // 个人中心
 message UM_SetName {
-    optional string name=1;
+    optional string name=1; 
+    optional string passwd=2;
+    optional uint32 sex=3;
 }
 message UM_SetSex {
     optional uint32 sex=1; // see SEX_T

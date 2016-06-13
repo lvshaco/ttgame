@@ -80,6 +80,7 @@ function user:init(roleid, gmlevel, info, items)
             city=0,
             describe="",
             exp=0,
+            equips=false,
         }
         self:db_tagdirty(self.DB_ROLE)
     else
@@ -90,6 +91,12 @@ function user:init(roleid, gmlevel, info, items)
             info.star=1
         end
         info.roleid = roleid -- force
+    end
+    if not info.equips then
+      info.equips = {}
+    end
+    for i=#info.equips+1, 4 do -- max 4
+        info.equips[i] = bag.genitem()
     end
     shaco.trace(tbl(info, "role_info"))
     self.info = info

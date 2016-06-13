@@ -27,6 +27,10 @@
             <FIELD name="物品ID" vname="id" type="int" len="0" to="lua" key="unique"/>
 			<FIELD name="物品类型" vname="type" type="int" len="0" to="lua"/>
 			<FIELD name="堆叠上限" vname="stack" type="int" len="0" to="lua"/>
+			<FIELD name="木宝箱开出概率" vname="boxrate1" type="float" len="0" to="lua"/>
+			<FIELD name="木宝箱开出数量" vname="boxcnt1" type="intw" len="0" to="lua"/>
+			<FIELD name="豪华宝箱开出概率" vname="boxrate2" type="float" len="0" to="lua"/>
+			<FIELD name="豪华宝箱开出数量" vname="boxcnt2" type="intw" len="0" to="lua"/>
 		</SHEET>
 	</table>
 	<table name="shop.xlsx" number="1">

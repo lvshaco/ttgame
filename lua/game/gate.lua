@@ -48,11 +48,11 @@ function gate.start(conf)
             websocket.accept(id)
             while true do
                 local data, typ = websocket.read(id)
-                if typ == "close" then
-                    logout(id, "websocket close")
-                    break
-                elseif typ == "data" then
+                if typ == "data" then
                     __handle(id, data)
+                else
+                    logout(id, "websocket "..typ)
+                    break
                 end
             end
         end)--, debug.traceback)

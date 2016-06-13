@@ -5,6 +5,7 @@ local sfmt = string.format
 local myredis = require "myredis"
 local userpool = require "userpool"
 local cache = require "cache"
+local pb = require "protobuf"
 
 local REQ = {}
 
@@ -81,7 +82,10 @@ REQ[IDUM_ReqPhotos] = function(ur, v)
 end
 
 REQ[IDUM_SetName] = function(ur, v)
-    if ur.info.name and ur.info.name ~= "" then
+  if #v.passwd <= 0 or #v.name <= 0 then
+    return SERR_Arg
+  end
+    if ur.info.name and #ur.info.name > 0 then
         return SERR_NameChanged
     end
     local name = v.name
@@ -90,16 +94,26 @@ REQ[IDUM_SetName] = function(ur, v)
         return err
     end
     local oldacc = ur.acc
+    local accinfo = myredis.urcall(ur, 'get', 'acc:'..oldacc)
+    if not accinfo then
+      return SERR_Noacc
+    end
+    accinfo = pb.decode('acc_info', accinfo)
+    accinfo.passwd = v.passwd
+
     local old = ur.info.name
     local myid = ur.info.roleid
 
     userpool.changename(ur, name)
+    ur.info.sex = v.sex
     ur:db_tagdirty(ur.DB_ROLE)
     ur:db_flush()
 
-    myredis.call('rename', 'acc:'..oldacc, 'acc:'..name)
-    myredis.set('rolen2id:'..name, myid)
-    myredis.del('rolen2id:'..old)
+    shaco.trace(tbl(accinfo, "acc_info"))
+    myredis.send('set', 'acc:'..oldacc, pb.encode('acc_info', accinfo))
+    myredis.send('rename', 'acc:'..oldacc, 'acc:'..name)
+    myredis.send('set', 'rolen2id:'..name, myid)
+    myredis.send('del', 'rolen2id:'..old)
     
     ur:syncrole()
 end

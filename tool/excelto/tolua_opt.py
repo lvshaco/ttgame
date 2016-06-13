@@ -120,14 +120,14 @@ class seri_opt:
                 subv = map(lambda x: '{%s}'%(','.join(x.split(':'))), subv)
                 return '{%s}'%','.join(subv)
             else:       
-                subv = map(lambda x:unicode(long(x)), unicode(v).split(':'))[:2]
+                subv = map(lambda x:unicode(x), unicode(v).split(','))[:2]
                 return '{%s}'%','.join(subv)
         elif ftype == "intt":
             if isarray: 
                 subv = map(lambda x: '{%s}'%(','.join(x.split(':'))), subv)
                 return '{%s}'%','.join(subv)
             else:
-                subv = map(lambda x:unicode(x), unicode(v).split(':'))[:3]
+                subv = map(lambda x:unicode(x), unicode(v).split(','))[:3]
                 return '{%s}'%','.join(subv)
         else:
             log.write("\n[error : unknow field type, "

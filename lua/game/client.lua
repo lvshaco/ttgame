@@ -86,7 +86,7 @@ end
 
 local function create_robot(host, account, index, rolename) 
     local id = websocket.connect(host, "/")
-    local v = rpc(id, IDUM_Login, {acc=account, passwd="123456"})
+    local v = rpc(id, IDUM_Login, {acc=account, passwd=""})
     __roleid = v.info.roleid
     local v = rpc(id, IDUM_ReqServerList,{})
     __serverlist = v.list or {}

@@ -12,6 +12,10 @@ rawset(_ENV, "IDUM_Login", 10) -- login
 rawset(_ENV, "IDUM_BuyItem", 20)
 rawset(_ENV, "IDUM_UseItem", 21)
 rawset(_ENV, "IDUM_ReqShop", 22) -- 请求商城列表
+
+rawset(_ENV, "IDUM_UnequipItem", 23)--卸下装备
+rawset(_ENV, "IDUM_OpenBox", 24) -- 开宝箱
+
 rawset(_ENV, "IDUM_HeroLevelup", 30) -- 神兽升级
 
 rawset(_ENV, "IDUM_ReqServerList", 50)-- 请求战斗服务器列表
@@ -35,7 +39,7 @@ rawset(_ENV, "IDUM_ReqGameRecord", 101) --比赛记录
 rawset(_ENV, "IDUM_SetPhoto", 102) --设置照片
 rawset(_ENV, "IDUM_ReqPhotos", 103) --req照片
 
-rawset(_ENV, "IDUM_SetName", 110) -- 设置姓名
+rawset(_ENV, "IDUM_SetName", 110) -- 设置姓名(现在是注册)
 rawset(_ENV, "IDUM_SetSex", 111) -- 设置性别
 rawset(_ENV, "IDUM_SetDesc", 112) -- 设置个人说明
 rawset(_ENV, "IDUM_SetGeo", 113) -- 设置地理位置
@@ -56,6 +60,7 @@ rawset(_ENV, "IDUM_SyncRole", 1012) -- 同步角色属性
 
 rawset(_ENV, "IDUM_ItemUpdate", 1020) -- 物品更新
 rawset(_ENV, "IDUM_Shop", 1022) -- 反馈商城列表 
+rawset(_ENV, "IDUM_EquipUpdate", 1023) --装备更新
 
 rawset(_ENV, "IDUM_Hero", 1030) -- 神兽升级反馈
 

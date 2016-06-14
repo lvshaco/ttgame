@@ -14,7 +14,7 @@ rawset(_ENV, "IDUM_UseItem", 21)
 rawset(_ENV, "IDUM_ReqShop", 22) -- 请求商城列表
 
 rawset(_ENV, "IDUM_UnequipItem", 23)--卸下装备
-rawset(_ENV, "IDUM_OpenBox", 24) -- 开宝箱
+--IDUM_OpenBox = 24; -- 开宝箱(feiqi)
 
 rawset(_ENV, "IDUM_HeroLevelup", 30) -- 神兽升级
 

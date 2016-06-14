@@ -339,10 +339,10 @@ function user:sendpackedmsg(msgid, packedmsg)
     end
     shaco.debug('Msg send:', self.connid, msgid, #packedmsg)
 
-    local str = string.gsub(packedmsg, ".", function(c)
-        return string.format("%d ", string.byte(c))
-    end)
-    shaco.trace(str)
+    --local str = string.gsub(packedmsg, ".", function(c)
+    --    return string.format("%d ", string.byte(c))
+    --end)
+    --shaco.trace(str)
 
     ctx.send2c(self.connid, spack("<I2", msgid)..packedmsg)
 end

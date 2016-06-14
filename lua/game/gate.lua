@@ -60,7 +60,7 @@ function gate.start(conf)
             logout(id, err)
         end
     end))
-    shaco.info("Listen on: "..host)
+    shaco.info("Gate Listen on: "..host)
 end
 
 return gate

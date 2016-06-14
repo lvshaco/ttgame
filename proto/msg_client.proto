@@ -17,7 +17,7 @@ IDUM_UseItem = 21;
 IDUM_ReqShop = 22; // 请求商城列表
 
 IDUM_UnequipItem = 23;//卸下装备
-IDUM_OpenBox = 24; // 开宝箱
+//IDUM_OpenBox = 24; // 开宝箱(feiqi)
 
 IDUM_HeroLevelup = 30; // 神兽升级
 
@@ -122,9 +122,9 @@ message UM_EquipUpdate {
   optional int32 itemtype=1;//物品类型(itemtype对应role_info中item字段)
   optional uint32 id=2;//物品id, 0表示卸下了，其他为装备上的物品id
 }
-message UM_OpenBox {
-  optional int32 type=1;//1: 木宝箱 2:豪华宝箱
-}
+//message UM_OpenBox {
+//  optional int32 type=1;//1: 木宝箱 2:豪华宝箱
+//}
 
 // shop
 message UM_ReqShop {

@@ -50,6 +50,13 @@ function nodelogic.dispatch(connid, msgid, msg)
                 ur:setmaxmass(v.mass)
                 ur:setduanwei(v.rank)
                 ur:syncrole()
+                if v.box1>0 then
+                  ur.bag:add(701, v.box1)
+                end
+                if v.box2>0 then
+                  ur.bag:add(702, v.box2)
+                end
+                ur:refreshbag()
                 ur:db_flush()
                 fight.record(roleid, {
                     roleid=roleid,

@@ -65,7 +65,7 @@ function node.start(conf)
             logout(id, err)
         end
     end))
-    shaco.info("Listen on: "..host)
+    shaco.info("Node Listen on: "..host)
 end
 
 return node

@@ -43,6 +43,77 @@ REQ[IDUM_BuyItem] = function(ur, v)
     return SERR_OK
 end
 
+local function rollitem(typ)
+  local f_rate = 'boxrate'..typ
+  local f_cnt  = 'boxcnt'..typ
+  local allrate = 0
+  for k, v in pairs(tpitem) do
+    if v.type==4 then -- 材料
+      allrate = allrate + v[f_rate]
+    end
+  end
+  allrate = math.floor(allrate*10)
+  local rate = math.random(1,allrate)/10
+  local cur_rate = 0
+  for k, v in pairs(tpitem) do
+    if v.type==4 then
+      cur_rate = cur_rate + v[f_rate]
+      if cur_rate >= rate then
+        local cnt = v[f_cnt]
+        if #cnt == 1 then
+          return {v.id, math.floor(cnt[1])}
+        else
+          return {v.id, math.random(math.floor(cnt[1]), math.floor(cnt[2]))}
+        end
+      end
+    end
+  end
+  error(string.format('rollitem error: %s, %s, %s', f_rate, allrate, rate))
+end
+
+local function openbox(ur, item)
+  local id = item.info.tpltid
+  local typ 
+  if id == 701 then -- 701
+    typ=1 
+  else -- 702
+    typ=2
+  end
+  if typ ~= 1 and
+     typ ~= 2 then
+    return SERR_Arg 
+  end
+  local take
+  local typcnt1, typcnt2
+  if typ==1 then
+    take=10
+    typcnt1=1
+    typcnt2=3
+  else
+    take=20
+    typcnt1=2
+    typcnt2=4
+  end
+  --if not ur:gold_enough(take) then
+  --  return SERR_Nogold
+  --end
+  local ol = {}
+  local typcnt = math.random(typcnt1, typcnt2)
+  for i=1, typcnt do
+    table.insert(ol, rollitem(typ))
+  end
+  shaco.trace(tbl(ol, "openbox_list"))
+  for _, v in ipairs(ol) do
+    ur.bag:add(v[1], v[2])
+  end
+  ur.bag:remove(id, 1)
+  --ur:gold_take(take)
+  --ur:syncrole()
+  ur:refreshbag()
+  return SERR_OK
+end
+
+
 local function typ2field(typ)
   if typ==2 then -- 光环
     return 1
@@ -75,7 +146,9 @@ REQ[IDUM_UseItem] = function(ur, v)
     return SERR_Arg
   end
   local typ = item.tp.type
-   
+  if typ==7 then -- 宝箱
+    return openbox(ur, item)
+  end
   local field = typ2field(typ)
   if not field then
     return SERR_Arg
@@ -100,69 +173,6 @@ REQ[IDUM_UnequipItem] = function(ur, v)
   ur:db_tagdirty(ur.DB_ROLE)
   ur:refreshbag()
   ur:send(IDUM_EquipUpdate, {itemtype=typ, id=0})
-end
-
-local function rollitem(typ)
-  local f_rate = 'boxrate'..typ
-  local f_cnt  = 'boxcnt'..typ
-  local allrate = 0
-  for k, v in pairs(tpitem) do
-    if v.type==4 then -- 材料
-      allrate = allrate + v[f_rate]
-    end
-  end
-  allrate = math.floor(allrate*10)
-  local rate = math.random(1,allrate)/10
-  local cur_rate = 0
-  for k, v in pairs(tpitem) do
-    if v.type==4 then
-      cur_rate = cur_rate + v[f_rate]
-      if cur_rate >= rate then
-        local cnt = v[f_cnt]
-        if #cnt == 1 then
-          return {v.id, math.floor(cnt[1])}
-        else
-          return {v.id, math.random(math.floor(cnt[1]), math.floor(cnt[2]))}
-        end
-      end
-    end
-  end
-  error(string.format('rollitem error: %s, %s, %s', f_rate, allrate, rate))
-end
-
-REQ[IDUM_OpenBox] = function(ur, v)
-  local typ = v.type
-  if typ ~= 1 and
-     typ ~= 2 then
-    return SERR_Arg 
-  end
-  local take
-  local typcnt1, typcnt2
-  if typ==1 then
-    take=10
-    typcnt1=1
-    typcnt2=3
-  else
-    take=20
-    typcnt1=2
-    typcnt2=4
-  end
-  if not ur:gold_enough(take) then
-    return SERR_Nogold
-  end
-  local ol = {}
-  local typcnt = math.random(typcnt1, typcnt2)
-  for i=1, typcnt do
-    table.insert(ol, rollitem(typ))
-  end
-  shaco.trace(tbl(ol, "openbox_list"))
-  for _, v in ipairs(ol) do
-    ur.bag:add(v[1], v[2])
-  end
-  ur:gold_take(take)
-  ur:syncrole()
-  ur:refreshbag()
-  return SERR_OK
 end
 
 return REQ

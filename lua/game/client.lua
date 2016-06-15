@@ -77,6 +77,7 @@ local function fight(s, roleid, key)
     local id = websocket.connect(s.serverip..":"..s.serverport, '/')
     -- EnterBoard
     websocket.send(id, spack("<I1I4I1I4I4s1", 255, 1, 0, roleid, key, "RobotR"))
+    --websocket.send(id, spack("<I1I4I4I4I4", 16, 30, 30, 30, 30))
     shaco.fork(function()
         while true do
             websocket.read(id)

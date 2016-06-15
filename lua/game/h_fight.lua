@@ -27,12 +27,19 @@ REQ[IDUM_ReqLoginFight] = function(ur, v)
 
     ur.fighting = serverid
     local key = math.random(1000000, 2000000)
+    local equips = ur.info.equips
     local r = noderpc.urcall(ur, connid, 10, {
         key = key,
         roleid = ur.info.roleid,
         sex = ur.info.sex,
         province = ur.info.province,
         city = ur.info.city,
+        heroid = ur.info.heroid,
+        herolevel = ur.info.herolevel,
+        guanghuan= equips[1].tpltid,
+        baozi = equips[2].tpltid,
+        canying = equips[3].tpltid,
+        huahuan = equips[4].tpltid,
     })
     if not r then
         ur.fighting = false

@@ -8,9 +8,21 @@ local friend = require "friend"
 local REQ = {}
 
 REQ[IDUM_GetFriend] = function(ur, v)
-    local l1 = friend.getfris(ur)
-    local l2 = friend.getfrisin(ur)
-    ur:send(IDUM_Friends, {fris=l1, frisin=l2})
+    local typ = v.type
+    local l
+    if typ==1 then
+        l=friend.getfris(ur)
+    elseif typ==2 then
+        l=friend.getfrisin(ur)
+    elseif typ==3 then
+        l=friend.getblacks(ur)
+    elseif typ==4 then
+        l=friend.getopponents(ur)
+    end
+    if not l then
+        return SERR_Arg
+    end
+    ur:send(IDUM_Friends, {type=typ, list=l})
 end
 
 REQ[IDUM_InviteFriend] = function(ur, v)
@@ -27,6 +39,11 @@ REQ[IDUM_ResponseInvite] = function(ur, v)
         err = friend.refuse(ur, v.roleid)
     end
     return err or SERR_OK
+end
+
+REQ[IDUM_ToBlack] = function(ur, v)
+    local roleid = v.roleid
+    return friend.toblack(ur, roleid)
 end
 
 return REQ

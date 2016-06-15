@@ -14,16 +14,44 @@ local function build_info(info)
     }
 end
 
-function friend.getfris(ur)
+local function getlist(ur, typ)
     local myid = ur.info.roleid
-    local l = myredis.smembers('friends:'..myid)
+    local l = myredis.smembers(typ..myid)
     return cache.queryv(l, build_info)
 end
 
+function friend.getfris(ur)
+    return getlist(ur, 'friends:')
+end
 function friend.getfrisin(ur)
+    return getlist(ur, 'friendsin:')
+end
+function friend.getblacks(ur)
+    return getlist(ur, 'blacks:')
+end
+function friend.getopponents(ur)
+    return getlist(ur, 'opponents:')
+end
+
+function friend.hasblack(ur, roleid)
     local myid = ur.info.roleid
-    local l = myredis.smembers('friendsin:'..myid)
-    return cache.queryv(l, build_info)
+    return myredis.urcall(ur, 'sismember', 'blacks:'..myid, roleid)
+end
+
+function friend.toblack(ur, roleid)
+    local myid = ur.info.roleid
+    if roleid == myid then
+        return SERR_Arg
+    end
+    local objinfo, obj = cache.query(roleid)
+    if not objinfo then
+        return obj -- err
+    end
+    if friend.hasblack(ur, roleid) then
+        return SERR_Blackyet
+    end
+    myredis.sadd('blacks:'..myid, roleid)
+    ur:send(IDUM_AddBlack, {info=build_info(objinfo)})
 end
 
 function friend.has(ur, roleid)

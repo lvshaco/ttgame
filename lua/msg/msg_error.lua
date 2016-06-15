@@ -25,4 +25,4 @@ rawset(_ENV, "SERR_Norole", 31)-- 没有指定角色
 rawset(_ENV, "SERR_Notfriend", 80)-- 不是好友
 rawset(_ENV, "SERR_Friendyet", 81)-- 已经是好友
 rawset(_ENV, "SERR_HasInvite", 82)--已经邀请
-
+rawset(_ENV, "SERR_Blackyet", 83)-- 已经拉黑

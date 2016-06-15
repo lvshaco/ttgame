@@ -26,5 +26,5 @@ SERR_Norole = 31;// 没有指定角色
 SERR_Notfriend = 80;// 不是好友
 SERR_Friendyet= 81;// 已经是好友
 SERR_HasInvite= 82;//已经邀请
-
+SERR_Blackyet= 83;// 已经拉黑
 }

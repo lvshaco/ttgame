@@ -36,6 +36,7 @@ IDUM_LikeMsg =83;//喜欢留言
 IDUM_GetFriend = 90; //请求好友列表
 IDUM_InviteFriend =91; //邀请好友
 IDUM_ResponseInvite =92; //应答好友邀请
+IDUM_ToBlack =95; // 请求拉入黑名单
 
 IDUM_ReqSeasonRank=100; //赛季排名
 IDUM_ReqGameRecord=101; //比赛记录
@@ -80,6 +81,7 @@ IDUM_Friends =1090; //好友列表
 IDUM_AddFriend=1091; //添加好友
 IDUM_AddInvite=1092; //添加邀请
 IDUM_DelInvite=1093; //删除邀请
+IDUM_AddBlack=1095; //添加黑名单
 
 IDUM_SeasonRank=1100; //赛季排名
 IDUM_GameRecord=1101; //比赛记录
@@ -237,11 +239,12 @@ message UM_MsgList {
 
 // friend
 message UM_GetFriend {
+    optional int32 type=1;//1:好友列表；2:好友邀请列表；3:黑名单；4对手
 }
 
 message UM_Friends {
-    repeated friend_info fris=1; // 好友列表
-    repeated friend_info frisin=2; // 收到好友邀请列表
+    repeated friend_info list=1; // 列表
+    optional int32 type=3;//see UM_GetFriend type字段
 }
 message UM_ResponseInvite {
     optional int32 ok=1;// 1:答应 0:拒绝
@@ -264,6 +267,12 @@ message UM_AddInvite {
 message UM_DelInvite {
     optional int32 type=1; // 1:拒绝info的邀请  2:info拒绝你邀请
     optional friend_info info=2;
+}
+message UM_ToBlack {
+    optional uint32 roleid=1; //
+}
+message UM_AddBlack {
+    optional friend_info info=1;
 }
 //
 message UM_ReqSeasonRank {

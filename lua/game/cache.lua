@@ -40,6 +40,7 @@ end
 function cache.queryv(rl, func)
     local l = {}
     for _, v in ipairs(rl) do
+        v = tonumber(v)
         local r = cache.query(v)
         if r then
             l[#l+1]=func(r)

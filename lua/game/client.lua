@@ -85,9 +85,9 @@ local function fight(s, roleid, key)
     end)
 end
 
-local function create_robot(host, account, index, rolename) 
+local function create_robot(host, account, index, passwd) 
     local id = websocket.connect(host, "/")
-    local v = rpc(id, IDUM_Login, {acc=account, passwd=""})
+    local v = rpc(id, IDUM_Login, {acc=account, passwd=passwd})
     __roleid = v.info.roleid
     local v = rpc(id, IDUM_ReqServerList,{})
     __serverlist = v.list or {}
@@ -116,9 +116,9 @@ shaco.start(function()
     local host = assert(shaco.getenv("host"))
     local robotid = tonumber(shaco.getenv("robotid"))
     local account  = shaco.getenv("acc") or string.format("robot_acc_%u", robotid)
-    local rolename = shaco.getenv("name") or string.format("robot_name_%u", robotid)
+    local passwd = shaco.getenv("passwd") or ""
     local index = tonumber(shaco.getenv("index")) or 0
-    local id = create_robot(host, account, index, rolename)
+    local id = create_robot(host, account, index, passwd)
 
     local history_file = ".gmrobot.history"
     linenoise.loadhistory(history_file)

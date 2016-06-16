@@ -49,6 +49,7 @@ message server_info {
     optional uint32 serverid=1; // id编号
     optional string serverip=2; // 
     optional uint32 serverport=3; //
+    optional string servername=4; //
 }
 
 message fans_info {

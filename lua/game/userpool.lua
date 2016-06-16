@@ -53,6 +53,7 @@ function userpool.changename(ur, name)
     ur.info.name = name
     name2user[name] = ur
 
+    ur.acc = name
     acc2user[oldacc] = nil
     acc2user[name] = ur
 end

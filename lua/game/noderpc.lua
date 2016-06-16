@@ -1,6 +1,7 @@
 local shaco = require "shaco"
 local ctx = require "ctx"
 local gamestate = require "gamestate"
+local tbl = require "tbl"
 
 local noderpc = {}
 
@@ -55,6 +56,7 @@ local function locateco(connid, msgid)
 end
 
 function noderpc.call(connid, msgid, v)
+    shaco.trace(tbl(v, "noderpc.call "..msgid))
     return wait(connid, msgid, v)
 end
 

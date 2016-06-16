@@ -31,7 +31,7 @@ REQ[IDUM_ReqLoginFight] = function(ur, v)
     local ticketcnt = 0
     if mode == 1 then
         ticketcnt = v.ticket_count
-        if ticketcnt <=0 or cnt >#LIFE then
+        if ticketcnt <=0 or ticketcnt >#LIFE then
             return SERR_Arg
         end
         if not ur.bag:has(1001, ticketcnt) then

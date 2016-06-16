@@ -51,9 +51,12 @@ GM.getitem = function(ur, id, count)
     end
 end
 
-GM.fight = function(ur, id)
+GM.fight = function(ur, id, mode, ticketcnt)
     id = tonumber(id) or 1
-    return REQ[IDUM_ReqLoginFight](ur, {serverid=id})
+    mode = tonumber(mode) or 0
+    ticketcnt = tonumber(ticketcnt) or 0
+    return REQ[IDUM_ReqLoginFight](ur, {
+        serverid=id, mode=mode, ticket_count=ticketcnt})
 end
 
 GM.duanwei = function(ur, i)

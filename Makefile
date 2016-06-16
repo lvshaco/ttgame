@@ -47,7 +47,9 @@ dist: proto res
 
 upver:
 	cd ~/code/lshaco && make server
-	cp -r ~/server/bin .
+	cp ~/server/bin/shaco bin/
+	cp ~/server/bin/*.so bin/
+	cp ~/server/bin/*.lso bin/
 
 client:
 	tar -zcf ~/msg.tgz \

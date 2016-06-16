@@ -19,6 +19,7 @@ rawset(_ENV, "SERR_NameChanged", 12)--名字已经改过
 
 rawset(_ENV, "SERR_Nocopper", 21) -- 铜币不足
 rawset(_ENV, "SERR_Nogold", 22) -- 元宝不足
+rawset(_ENV, "SERR_Noticket", 23) -- 入场劵不足
 rawset(_ENV, "SERR_Nomat", 30) -- 材料不足
 rawset(_ENV, "SERR_Norole", 31)-- 没有指定角色
 

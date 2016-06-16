@@ -15,6 +15,8 @@ REQ[IDUM_ReqServerList] = function(ur)
     ur:send(IDUM_ServerList, {list = list})
 end
 
+local LIFE = {3,6,10,13,16,20,23,26,30,33}
+
 REQ[IDUM_ReqLoginFight] = function(ur, v)
     if ur.fighting then
         return SERR_State
@@ -24,11 +26,28 @@ REQ[IDUM_ReqLoginFight] = function(ur, v)
     if not connid then
         return SERR_Arg
     end
-
+    local mode = v.mode
+    local life = 0
+    local ticketcnt = 0
+    if mode == 1 then
+        ticketcnt = v.ticket_count
+        if ticketcnt <=0 or cnt >#LIFE then
+            return SERR_Arg
+        end
+        if not ur.bag:has(1001, ticketcnt) then
+            return SERR_Noticket
+        end
+        life = LIFE[ticketcnt]
+    else
+        mode = 0
+    end
+    
     ur.fighting = serverid
     local key = math.random(1000000, 2000000)
     local equips = ur.info.equips
     local r = noderpc.urcall(ur, connid, 10, {
+        mode = mode,
+        life = life,
         key = key,
         roleid = ur.info.roleid,
         sex = ur.info.sex,
@@ -55,6 +74,10 @@ REQ[IDUM_ReqLoginFight] = function(ur, v)
         end
     end
 
+    if ticketcnt > 0 then -- take ticket
+        ur.bag:remove(1001, ticketcnt)
+        ur:refreshbag()
+    end
     ur:send(IDUM_LoginFightKey, {serverid=serverid, key=key})
 end
 

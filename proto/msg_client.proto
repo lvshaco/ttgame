@@ -152,6 +152,8 @@ message UM_ServerList {
 
 message UM_ReqLoginFight {
     optional uint32 serverid=1; //服务器id
+    optional int32 mode=2; // 0: 自由模式; 1: 生存模式
+    optional uint32 ticket_count=3;//入场劵 
 }
 message UM_LoginFightKey {
     optional uint32 serverid=1; // 服务器id

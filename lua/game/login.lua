@@ -40,7 +40,7 @@ function login.login(connid, v)
     if ai then
         ai = pb.decode('acc_info', ai)
         if ai then
-          if ai.passwd ~= passwd then
+          if ai.passwd ~= "" and ai.passwd ~= passwd then
             error("Invalid passwd:", passwd)
             return SERR_Passwd
           end

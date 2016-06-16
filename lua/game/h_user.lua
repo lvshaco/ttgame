@@ -116,6 +116,7 @@ REQ[IDUM_SetName] = function(ur, v)
     myredis.send('del', 'rolen2id:'..old)
     
     ur:syncrole()
+    return SERR_OK
 end
 
 REQ[IDUM_SetSex] = function(ur, v)

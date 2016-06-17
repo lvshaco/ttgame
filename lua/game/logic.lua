@@ -107,8 +107,12 @@ function logic.dispatch(connid, msgid, v)
             if err == ctx.error_logout then
                 return
             else 
-                ctx.logout(connid, err)
                 shaco.error(err)
+                ctx.logout(connid, err)
+            end
+        else
+            if err then
+                ur:send(IDUM_Response, {msgid=msgid, err=err})
             end
         end
     else
@@ -123,7 +127,6 @@ function logic.dispatch(connid, msgid, v)
         end
         if err then
             ur:send(IDUM_Response, {msgid=msgid, err=err})
-            shaco.trace("Response:", err)
         end
         ur:db_flush()
     end

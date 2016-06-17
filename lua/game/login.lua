@@ -42,7 +42,7 @@ function login.login(connid, v)
         if ai then
           if ai.passwd ~= "" and ai.passwd ~= passwd then
             error("Invalid passwd:", passwd)
-            return SERR_Passwd
+            --return SERR_Passwd
           end
         end
     end

@@ -50,6 +50,8 @@ IDUM_SetGeo=113; // 设置地理位置
 IDUM_SetIcon=114; // 设置地理位置
 IDUM_GetTicket=115; // 免费领票
 
+IDUM_ReqIcons=120; //批量请求照片icon数据
+
 IDUM_GATEE = 999; // client request end
 
 //----------------------------------------
@@ -88,6 +90,9 @@ IDUM_AddBlack=1095; //添加黑名单
 IDUM_SeasonRank=1100; //赛季排名
 IDUM_GameRecord=1101; //比赛记录
 IDUM_Photos=1103;//照片列表
+
+IDUM_Icons=1120; //照片icon数据列表
+
 IDUM_CLIE =1999; // to client end
 }
 
@@ -322,6 +327,13 @@ message UM_SetGeo {
 }
 message UM_SetIcon {
     optional uint32 icon=1;
+    optional string data=2; //照片icon数据
 }
 message UM_GetTicket {
+}
+message UM_ReqIcons {
+    repeated uint32 list = 1; //roleid list
+}
+message UM_Icons {
+    repeated icon_data list= 1;
 }

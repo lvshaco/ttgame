@@ -64,7 +64,7 @@ function user:init(roleid, gmlevel, info, items)
             roleid = roleid,
             name = "",
             create_time=0,
-            icon=1,
+            icon=101, -- default id
             sex=0,
             level=0,
             copper=10000,

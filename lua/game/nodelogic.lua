@@ -75,8 +75,6 @@ function nodelogic.dispatch(connid, msgid, msg)
                 ur:send(IDUM_FightLikes, {attentions=l1, likes=l2})
             end
         end
-        for k, v in ipairs(ranks) do
-        end
     end
 end
 

@@ -25,4 +25,5 @@ MSG_RESNAME[IDUM_AddBlack] = "UM_AddBlack"
 MSG_RESNAME[IDUM_SeasonRank] = "UM_SeasonRank"
 MSG_RESNAME[IDUM_GameRecord] = "UM_GameRecord"
 MSG_RESNAME[IDUM_Photos] = "UM_Photos"
+MSG_RESNAME[IDUM_Icons] = "UM_Icons"
 return MSG_RESNAME

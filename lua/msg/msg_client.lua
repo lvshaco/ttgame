@@ -47,6 +47,8 @@ rawset(_ENV, "IDUM_SetGeo", 113) -- 设置地理位置
 rawset(_ENV, "IDUM_SetIcon", 114) -- 设置地理位置
 rawset(_ENV, "IDUM_GetTicket", 115) -- 免费领票
 
+rawset(_ENV, "IDUM_ReqIcons", 120) --批量请求照片icon数据
+
 rawset(_ENV, "IDUM_GATEE", 999) -- client request end
 
 ------------------------------------------
@@ -85,4 +87,7 @@ rawset(_ENV, "IDUM_AddBlack", 1095) --添加黑名单
 rawset(_ENV, "IDUM_SeasonRank", 1100) --赛季排名
 rawset(_ENV, "IDUM_GameRecord", 1101) --比赛记录
 rawset(_ENV, "IDUM_Photos", 1103)--照片列表
+
+rawset(_ENV, "IDUM_Icons", 1120) --照片icon数据列表
+
 rawset(_ENV, "IDUM_CLIE", 1999) -- to client end

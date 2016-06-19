@@ -66,6 +66,7 @@ REQ[IDUM_SetPhoto] = function(ur, v)
         return SERR_Arg
     end
     myredis.hmset('photo:'..myid, slot, data)
+    return SERR_OK
 end
 
 REQ[IDUM_ReqPhotos] = function(ur, v)
@@ -146,6 +147,19 @@ REQ[IDUM_SetGeo] = function(ur, v)
 end
 
 REQ[IDUM_SetIcon] = function(ur, v)
+    local icon = v.icon
+    local data = v.data
+    if icon >= 0 and icon < 100 then
+        if data == "" then --没有照片icon数据
+            return SERR_Arg
+        end
+    else
+        data = nil
+    end
+    local myid = ur.info.roleid
+    if data then
+        myredis.urcall(ur, 'hmset', 'photo:'..myid, 0, data) -- store in slot 0
+    end
     ur.info.icon = v.icon
     ur:db_tagdirty(ur.DB_ROLE)
     ur:syncrole()
@@ -160,6 +174,18 @@ REQ[IDUM_GetTicket] = function(ur, v)
     ur:syncrole()
     ur.bag:add(1001, 1)
     ur:refreshbag()
+end
+
+REQ[IDUM_ReqIcons] = function(ur, v)
+    local l = {}
+    for id in ipairs(v.list) do
+        local data = myredis.urcall(ur, 'hmget', 'photo:'..id, 0)
+        l[#l+1] = {
+            roleid = id,
+            data = data,
+        }
+    end
+    ur:send(IDUM_Icons, {list = l})
 end
 
 return REQ

@@ -180,10 +180,12 @@ REQ[IDUM_ReqIcons] = function(ur, v)
     local l = {}
     for id in ipairs(v.list) do
         local data = myredis.urcall(ur, 'hmget', 'photo:'..id, 0)
-        l[#l+1] = {
-            roleid = id,
-            data = data,
-        }
+        if data then
+            l[#l+1] = {
+                roleid = id,
+                data = data[1],
+            }
+        end
     end
     ur:send(IDUM_Icons, {list = l})
 end

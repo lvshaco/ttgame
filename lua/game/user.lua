@@ -81,6 +81,8 @@ function user:init(roleid, gmlevel, info, items)
             describe="",
             exp=0,
             equips=false,
+            free_ticket=0,
+            refresh_time=0,
         }
         self:db_tagdirty(self.DB_ROLE)
     else
@@ -103,7 +105,15 @@ function user:init(roleid, gmlevel, info, items)
     self.gmlevel = gmlevel
     self.bag = bag.new(items and items.list or nil)
 
-    headflower(self)
+    local now = shaco.now()//1000
+    local now_day = util.second2day(now)
+    local last_day = util.second2day(info.refresh_time)
+       
+    if now_day ~= last_day then
+        self:onchangeday(true)
+    else
+        headflower(self)
+    end
 
     self:db_flush()
 end
@@ -129,8 +139,22 @@ end
 function user:update(now)
 end
 
-function user:onchangeday()
+function user:onchangeday(login)
+    local now = shaco.now()//1000
+	self.info.refresh_time = now
+   
+    local uprole = false
+    local info = self.info
+    if info.free_ticket < 1 then
+        info.free_ticket = 1
+        uprole = true
+    end
+    if uprole then
+        self:syncrole()
+    end
     headflower(self)
+    self:db_tagdirty(self.DB_ROLE)
+    self:db_flush()
 end
 
 -- db

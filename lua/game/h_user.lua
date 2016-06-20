@@ -69,8 +69,8 @@ REQ[IDUM_SetPhoto] = function(ur, v)
 end
 
 REQ[IDUM_ReqPhotos] = function(ur, v)
-    local myid = ur.info.roleid
-    local t = myredis.hmget('photo:'..myid, 1,2,3,4,5,6,7,8,9,10)
+    local roleid = v.roleid
+    local t = myredis.hmget('photo:'..roleid, 1,2,3,4,5,6,7,8,9,10)
     local l = {}
     for k, v in pairs(t) do
         l[#l+1] = {
@@ -78,7 +78,7 @@ REQ[IDUM_ReqPhotos] = function(ur, v)
             data = v,
         }
     end
-    ur:send(IDUM_Photos, {list=l})
+    ur:send(IDUM_Photos, {roleid=roleid, list=l})
 end
 
 REQ[IDUM_SetName] = function(ur, v)
@@ -143,6 +143,23 @@ REQ[IDUM_SetGeo] = function(ur, v)
     ur.info.city = v.city
     ur:db_tagdirty(ur.DB_ROLE)
     ur:syncrole()
+end
+
+REQ[IDUM_SetIcon] = function(ur, v)
+    ur.info.icon = v.icon
+    ur:db_tagdirty(ur.DB_ROLE)
+    ur:syncrole()
+end
+
+REQ[IDUM_GetTicket] = function(ur, v)
+    if ur.info.free_ticket <=0 then
+        return SERR_State
+    end
+    ur.info.free_ticket = ur.info.free_ticket-1
+    ur:db_tagdirty(ur.DB_ROLE)
+    ur:syncrole()
+    ur.bag:add(1001, 1)
+    ur:refreshbag()
 end
 
 return REQ

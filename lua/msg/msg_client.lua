@@ -44,6 +44,8 @@ rawset(_ENV, "IDUM_SetName", 110) -- 设置姓名(现在是注册)
 rawset(_ENV, "IDUM_SetSex", 111) -- 设置性别
 rawset(_ENV, "IDUM_SetDesc", 112) -- 设置个人说明
 rawset(_ENV, "IDUM_SetGeo", 113) -- 设置地理位置
+rawset(_ENV, "IDUM_SetIcon", 114) -- 设置地理位置
+rawset(_ENV, "IDUM_GetTicket", 115) -- 免费领票
 
 rawset(_ENV, "IDUM_GATEE", 999) -- client request end
 

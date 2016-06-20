@@ -29,6 +29,8 @@ message role_info {
     optional uint32 herolevel=20;//神兽level
     optional uint32 exp=21;//exp
     repeated item_info equips =22;//光环, 孢子，残影，花环
+    optional uint32 free_ticket=23;//免费ticket数量
+    optional uint32 refresh_time=24; // 上次跨天刷新时间
 }
 
 message item_info {

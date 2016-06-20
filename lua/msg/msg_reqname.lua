@@ -30,4 +30,6 @@ MSG_REQNAME[IDUM_SetName] = "UM_SetName"
 MSG_REQNAME[IDUM_SetSex] = "UM_SetSex"
 MSG_REQNAME[IDUM_SetDesc] = "UM_SetDesc"
 MSG_REQNAME[IDUM_SetGeo] = "UM_SetGeo"
+MSG_REQNAME[IDUM_SetIcon] = "UM_SetIcon"
+MSG_REQNAME[IDUM_GetTicket] = "UM_GetTicket"
 return MSG_REQNAME

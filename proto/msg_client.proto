@@ -47,6 +47,8 @@ IDUM_SetName=110; // 设置姓名(现在是注册)
 IDUM_SetSex=111; // 设置性别
 IDUM_SetDesc=112; // 设置个人说明
 IDUM_SetGeo=113; // 设置地理位置
+IDUM_SetIcon=114; // 设置地理位置
+IDUM_GetTicket=115; // 免费领票
 
 IDUM_GATEE = 999; // client request end
 
@@ -295,9 +297,11 @@ message UM_SetPhoto {
     optional photo_data data=1;
 }
 message UM_ReqPhotos {
+    optional uint32 roleid=1;
 }
 message UM_Photos {
     repeated photo_data list=1;
+    optional uint32 roleid=2;
 }
 
 // 个人中心
@@ -315,4 +319,9 @@ message UM_SetDesc {
 message UM_SetGeo {
     optional uint32 province=1;
     optional uint32 city=2;
+}
+message UM_SetIcon {
+    optional uint32 icon=1;
+}
+message UM_GetTicket {
 }

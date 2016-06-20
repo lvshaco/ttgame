@@ -127,6 +127,7 @@ REQ[IDUM_SetSex] = function(ur, v)
     ur.info.sex = v.sex
     ur:db_tagdirty(ur.DB_ROLE)
     ur:syncrole()
+    return SERR_OK
 end
 
 REQ[IDUM_SetDesc] = function(ur, v)
@@ -137,6 +138,7 @@ REQ[IDUM_SetDesc] = function(ur, v)
     ur.info.describe = desc
     ur:db_tagdirty(ur.DB_ROLE)
     ur:syncrole()
+    return SERR_OK
 end
 
 REQ[IDUM_SetGeo] = function(ur, v)
@@ -144,6 +146,7 @@ REQ[IDUM_SetGeo] = function(ur, v)
     ur.info.city = v.city
     ur:db_tagdirty(ur.DB_ROLE)
     ur:syncrole()
+    return SERR_OK
 end
 
 REQ[IDUM_SetIcon] = function(ur, v)
@@ -163,6 +166,7 @@ REQ[IDUM_SetIcon] = function(ur, v)
     ur.info.icon = v.icon
     ur:db_tagdirty(ur.DB_ROLE)
     ur:syncrole()
+    return SERR_OK
 end
 
 REQ[IDUM_GetTicket] = function(ur, v)
@@ -178,7 +182,7 @@ end
 
 REQ[IDUM_ReqIcons] = function(ur, v)
     local l = {}
-    for id in ipairs(v.list) do
+    for _, id in ipairs(v.list) do
         local data = myredis.urcall(ur, 'hmget', 'photo:'..id, 0)
         if data then
             l[#l+1] = {

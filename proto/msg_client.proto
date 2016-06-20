@@ -215,6 +215,7 @@ message UM_Ranks {
 message UM_FightLikes {
     repeated bool attentions=1; //是否关注列表(索引对应排名)
     repeated bool likes=2;// 是否喜欢列表
+    repeated uint32 roles=3;// 角色列表
 }
 
 // msg

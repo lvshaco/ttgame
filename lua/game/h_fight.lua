@@ -51,6 +51,7 @@ REQ[IDUM_ReqLoginFight] = function(ur, v)
         key = key,
         roleid = ur.info.roleid,
         sex = ur.info.sex,
+        icon = ur.info.icon,
         province = ur.info.province,
         city = ur.info.city,
         heroid = ur.info.heroid,

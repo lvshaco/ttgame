@@ -34,13 +34,15 @@ function nodelogic.dispatch(connid, msgid, msg)
         end
     elseif msgid == 11 then 
         local roles = msg.roles
-        local ranks = msg.ranks
-        for i=1, #ranks do
-            ranks[i] = math.floor(ranks[i])
+        local ids = {}
+        for i=1, #roles do
+            local id = math.floor(roles[i].roleid)
+            roles[i].roleid = id
+            ids[i] = id
         end
         local now = shaco.now()//1000
         for k, v in ipairs(roles) do
-            local roleid = math.floor(v.roleid)
+            local roleid = v.roleid
             local ur = userpool.find_byid(roleid)
             if ur and ur.fighting then
                 ur.fighting = false
@@ -70,9 +72,9 @@ function nodelogic.dispatch(connid, msgid, msg)
                     live=v.live, --
                     copper=v.copper,
                 })
-                local l1 = relation.mhas(roleid, 'attention', ranks)
-                local l2 = relation.mhas(roleid, 'like', ranks)
-                ur:send(IDUM_FightLikes, {attentions=l1, likes=l2})
+                local l1 = relation.mhas(roleid, 'attention', ids)
+                local l2 = relation.mhas(roleid, 'like', ids)
+                ur:send(IDUM_FightLikes, {attentions=l1, likes=l2, roles=ids})
             end
         end
     end

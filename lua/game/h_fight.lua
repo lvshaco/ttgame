@@ -60,6 +60,7 @@ REQ[IDUM_ReqLoginFight] = function(ur, v)
         baozi = equips[2].tpltid,
         canying = equips[3].tpltid,
         huahuan = equips[4].tpltid,
+        name = ur.info.name,
     })
     if not r then
         ur.fighting = false

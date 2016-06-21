@@ -2,7 +2,7 @@ local shaco = require "shaco"
 local login = require "login"
 local userpool = require "userpool"
 local user = require "user"
-local mydb = require "mydb"
+--local mydb = require "mydb"
 local myredis = require "myredis"
 local gamestate = require "gamestate"
 local MSG_REQNAME = require "msg_reqname"
@@ -56,7 +56,7 @@ function logic.init(conf)
     end
     ctx.msgn2id = msgn2id
 
-    mydb.init(conf.db)
+    --mydb.init(conf.db)
     myredis.init(conf.rd)
 
     -- roleid

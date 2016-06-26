@@ -6,6 +6,8 @@ local MAX = 10
 
 local fight = {}
 
+local fight_tag_pool = {}
+
 function fight.record(roleid, v)
     v = pb.encode('game_record', v)
     myredis.lpush('fight:'..roleid, v)

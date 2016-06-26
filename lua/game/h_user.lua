@@ -178,6 +178,7 @@ REQ[IDUM_GetTicket] = function(ur, v)
     ur:syncrole()
     ur.bag:add(1001, 1)
     ur:refreshbag()
+    return SERR_OK
 end
 
 REQ[IDUM_ReqIcons] = function(ur, v)

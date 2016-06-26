@@ -18,69 +18,93 @@ end
 local LIFE = {3,6,10,13,16,20,23,26,30,33}
 
 REQ[IDUM_ReqLoginFight] = function(ur, v)
-    if ur.fighting then
+    if ur.fightenter then
         return SERR_State
     end
-    local serverid = v.serverid
-    local connid = nodepool.find_byserverid(serverid)
-    if not connid then
-        return SERR_Arg
-    end
-    local mode = v.mode
-    local life = 0
-    local ticketcnt = 0
-    if mode == 1 then
-        ticketcnt = v.ticket_count
-        if ticketcnt <=0 or ticketcnt >#LIFE then
+    local r
+    local serverid
+    local mode
+    local ticketcnt
+    local fighting = ur.fighting
+    if not fighting then
+        serverid = v.serverid
+        local connid = nodepool.find_byserverid(serverid)
+        if not connid then
             return SERR_Arg
         end
-        if not ur.bag:has(1001, ticketcnt) then
-            return SERR_Noticket
+        mode = v.mode
+        local life = 0
+        ticketcnt = 0
+        if mode == 1 then
+            ticketcnt = v.ticket_count
+            if ticketcnt <=0 or ticketcnt >#LIFE then
+                return SERR_Arg
+            end
+            if not ur.bag:has(1001, ticketcnt) then
+                return SERR_Noticket
+            end
+            life = LIFE[ticketcnt]
+        else
+            mode = 0
         end
-        life = LIFE[ticketcnt]
+        local key = math.random(1000000, 2000000)
+        local equips = ur.info.equips
+        r = noderpc.urcall(ur, connid, 10, {
+            mode = mode,
+            life = life,
+            key = key,
+            roleid = ur.info.roleid,
+            sex = ur.info.sex,
+            icon = ur.info.icon,
+            province = ur.info.province,
+            city = ur.info.city,
+            heroid = ur.info.heroid,
+            herolevel = ur.info.herolevel,
+            guanghuan= equips[1].tpltid,
+            baozi = equips[2].tpltid,
+            canying = equips[3].tpltid,
+            huahuan = equips[4].tpltid,
+            name = ur.info.name,
+        })
     else
-        mode = 0
-    end
-    
-    ur.fighting = serverid
-    local key = math.random(1000000, 2000000)
-    local equips = ur.info.equips
-    local r = noderpc.urcall(ur, connid, 10, {
-        mode = mode,
-        life = life,
-        key = key,
-        roleid = ur.info.roleid,
-        sex = ur.info.sex,
-        icon = ur.info.icon,
-        province = ur.info.province,
-        city = ur.info.city,
-        heroid = ur.info.heroid,
-        herolevel = ur.info.herolevel,
-        guanghuan= equips[1].tpltid,
-        baozi = equips[2].tpltid,
-        canying = equips[3].tpltid,
-        huahuan = equips[4].tpltid,
-        name = ur.info.name,
-    })
+        serverid = fighting.serverid
+        local connid = nodepool.find_byserverid(serverid);
+        if not connid then
+            return SERR_FightGone
+        end
+        r = noderpc.urcall(ur, connid, 10, {
+            roleid = ur.info.roleid,
+            reenter = true,
+        })
+    end 
     if not r then
-        ur.fighting = false
+        ur.fightenter = false
         return SERR_Remote
     end
-    if r.code ~= 0 then
-        if r.code ~= 1 then
-            ur.fighting = false
-            shaco.error("Login fight return code:", r.code)
-            return SERR_Remote
-        else
-            shaco.trace("Login fight return exist")
+    local code = r.code
+    if code == 0 then
+    elseif code == 1 then
+        shaco.trace("Login fight return exist")
+    elseif code == 2 then
+        ur.fightenter = false
+        ur.fighting = false
+        return SERR_ReenterFight -- client recv this, should re request fight normal
+    else
+        ur.fightenter = false
+        shaco.error("Login fight return code:", r.code)
+        return SERR_Remote
+    end
+    if not fighting then
+        ur.fighting = {
+            serverid = serverid,
+            mode = mode,
+        }
+        if ticketcnt > 0 then -- take ticket
+            ur.bag:remove(1001, ticketcnt)
+            ur:refreshbag()
         end
     end
-
-    if ticketcnt > 0 then -- take ticket
-        ur.bag:remove(1001, ticketcnt)
-        ur:refreshbag()
-    end
-    ur:send(IDUM_LoginFightKey, {serverid=serverid, key=key})
+    ur:send(IDUM_LoginFightKey, {serverid=serverid, key=r.key})
 end
 
 REQ[IDUM_ReqGameRecord] = function(ur, v)

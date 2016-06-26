@@ -28,4 +28,7 @@ SERR_Notfriend = 80;// 不是好友
 SERR_Friendyet= 81;// 已经是好友
 SERR_HasInvite= 82;//已经邀请
 SERR_Blackyet= 83;// 已经拉黑
+
+SERR_FightGone=84; //战斗服找不到
+SERR_ReenterFight=85; //重新进入战斗失败，需要重新正常进战斗
 }

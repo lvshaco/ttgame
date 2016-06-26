@@ -34,6 +34,7 @@ dist: proto res
 	cp -r ~/server_linux/bin server/
 	cp bin/config* server/bin/
 	cp bin/redis*.conf*.def server/bin/
+	cp start server/
 	cp -r res server/
 	cp -r sql server/
 	cp -r proto server/

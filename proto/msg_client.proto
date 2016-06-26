@@ -107,6 +107,7 @@ message UM_Logout {
 message UM_EnterGame {
     optional role_info info=1;
     optional uint32 servertime=2; //服务器当前时间
+    optional bool fighting=3; //是否处于战斗中
 }
 
 message UM_SyncRole {

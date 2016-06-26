@@ -1,0 +1,3 @@
+kill -9 `pgrep -f shaco`
+cd bin && ./shaco config --daemon 1
+pgrep -f shaco

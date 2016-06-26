@@ -9,6 +9,7 @@ local myredis = require "myredis"
 local bag = require "bag"
 local rank = require "rank"
 local gamestate = require "gamestate"
+local fighttag = require "fighttag"
 local tpexp = require "__tpexp"
 local tpduanwei = require "__tpduanwei"
 local tpduanwei_star = require "__tpduanwei_star"
@@ -53,6 +54,8 @@ function user.new(connid, status)
         acc = false,
         info = false,
         bag = false,
+        fighting = false,
+        fightenter = false,
     }
     setmetatable(self, user)
     return self
@@ -119,7 +122,10 @@ function user:init(roleid, gmlevel, info, items)
 end
 
 function user:entergame()
-	self:send(IDUM_EnterGame, {info=self.info, servertime=shaco.now()//1000})
+    local fighting = fighttag.unset(self.info.roleid);
+    self.fighting = fighting
+	self:send(IDUM_EnterGame, {info=self.info, servertime=shaco.now()//1000, 
+    fighting=not not fighting})
 
     local items = {}
     self.bag:foreach(function(v)
@@ -129,6 +135,9 @@ function user:entergame()
 end
 
 function user:exitgame()
+    if self.fighting then
+        fighttag.set(self.info.roleid, self.fighting)
+    end
     self:db_flush(true)
 end
 

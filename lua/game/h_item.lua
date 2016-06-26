@@ -162,6 +162,7 @@ REQ[IDUM_UseItem] = function(ur, v)
   ur:db_tagdirty(ur.DB_ROLE)
   ur:refreshbag()
   ur:send(IDUM_EquipUpdate, {itemtype=typ, id=id})
+  return SERR_OK
 end
 
 REQ[IDUM_UnequipItem] = function(ur, v)

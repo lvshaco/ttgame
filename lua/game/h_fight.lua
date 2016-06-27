@@ -113,4 +113,23 @@ REQ[IDUM_ReqGameRecord] = function(ur, v)
     ur:send(IDUM_GameRecord, {list=l})
 end
 
+REQ[IDUM_ExitFight] = function(ur, v)
+    if not ur.fighting then
+        return SERR_State
+    end
+    local connid = nodepool.find_byserverid(ur.fighting.serverid)
+    if not connid then
+        return SERR_Arg
+    end
+    local r = noderpc.urcall(ur, connid, 12, {
+        roleid = ur.info.roleid,
+    })
+    if not r then
+        return SERR_ExitFight
+    end
+    ur.fighting = false
+    shaco.trace("ExitFight:", r.code);
+    return SERR_OK
+end
+
 return REQ

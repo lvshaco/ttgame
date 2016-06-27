@@ -30,3 +30,4 @@ rawset(_ENV, "SERR_Blackyet", 83)-- 已经拉黑
 
 rawset(_ENV, "SERR_FightGone", 84) --战斗服找不到
 rawset(_ENV, "SERR_ReenterFight", 85) --重新进入战斗失败，需要重新正常进战斗
+rawset(_ENV, "SERR_ExitFight", 86)--退出战斗出现错误

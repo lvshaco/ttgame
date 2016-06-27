@@ -23,6 +23,7 @@ IDUM_HeroLevelup = 30; // 神兽升级
 
 IDUM_ReqServerList = 50;// 请求战斗服务器列表
 IDUM_ReqLoginFight = 51; // 请求登录战斗服
+IDUM_ExitFight = 52; // 退出战斗
 
 IDUM_SetFocus = 60; 
 IDUM_ReqRole = 62; // 请求他人数据
@@ -168,6 +169,8 @@ message UM_ReqLoginFight {
 message UM_LoginFightKey {
     optional uint32 serverid=1; // 服务器id
     optional uint32 key=2; //战斗服登录钥匙
+}
+message UM_ExitFight {
 }
 
 // common

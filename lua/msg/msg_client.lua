@@ -20,6 +20,7 @@ rawset(_ENV, "IDUM_HeroLevelup", 30) -- 神兽升级
 
 rawset(_ENV, "IDUM_ReqServerList", 50)-- 请求战斗服务器列表
 rawset(_ENV, "IDUM_ReqLoginFight", 51) -- 请求登录战斗服
+rawset(_ENV, "IDUM_ExitFight", 52) -- 退出战斗
 
 rawset(_ENV, "IDUM_SetFocus", 60) 
 rawset(_ENV, "IDUM_ReqRole", 62) -- 请求他人数据

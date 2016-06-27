@@ -42,7 +42,7 @@ local function headflower(ur)
     elseif os.date("%Y%m%d", now) == "20170128" then -- 春节
         ur:adduniqueitem(612)
     end
-    ur:refreshbag()
+    ur:refreshbag(10)
 end
 
 function user.new(connid, status)
@@ -131,7 +131,7 @@ function user:entergame()
     self.bag:foreach(function(v)
         items[#items+1] = v.info
     end)
-    self:send(IDUM_ItemUpdate, {list=items})
+    self:send(IDUM_ItemUpdate, {list=items, type=0})
 end
 
 function user:exitgame()
@@ -342,15 +342,14 @@ function user:setmaxmass(mass)
 end
 
 -- bag item
-function user:refreshbag()
+function user:refreshbag(typ)
     local items = {}
     self.bag:refresh(function(v)
         items[#items+1] = v.info
     end)
     if #items > 0 then
-        shaco.trace(tbl(items, "refreshbag"))
         self:db_tagdirty(self.DB_ITEM)
-        self:send(IDUM_ItemUpdate, {list=items})
+        self:send(IDUM_ItemUpdate, {list=items, type=typ})
     end
 end
 

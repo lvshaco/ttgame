@@ -53,7 +53,7 @@ REQ[IDUM_HeroLevelup] = function(ur)
     info.herolevel =level 
     
     ur:db_tagdirty(ur.DB_ROLE)
-    ur:refreshbag()
+    ur:refreshbag(8)
 
     ur:send(IDUM_Hero, {heroid=heroid, herolevel=level})
 end
@@ -177,7 +177,7 @@ REQ[IDUM_GetTicket] = function(ur, v)
     ur:db_tagdirty(ur.DB_ROLE)
     ur:syncrole()
     ur.bag:add(1001, 1)
-    ur:refreshbag()
+    ur:refreshbag(9)
     return SERR_OK
 end
 

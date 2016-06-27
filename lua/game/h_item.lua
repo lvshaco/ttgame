@@ -38,7 +38,7 @@ REQ[IDUM_BuyItem] = function(ur, v)
         ur:gold_take(tp.gold)
     end
     ur.bag:add(id, 1)
-    ur:refreshbag()
+    ur:refreshbag(5)
     ur:syncrole()
     return SERR_OK
 end
@@ -109,7 +109,7 @@ local function openbox(ur, item)
   ur.bag:remove(id, 1)
   --ur:gold_take(take)
   --ur:syncrole()
-  ur:refreshbag()
+  ur:refreshbag(1)
   return SERR_OK
 end
 
@@ -160,7 +160,7 @@ REQ[IDUM_UseItem] = function(ur, v)
   local iteminfo = ur.bag:remove(id, item.info.stack, true)
   ur.info.equips[field] = iteminfo
   ur:db_tagdirty(ur.DB_ROLE)
-  ur:refreshbag()
+  ur:refreshbag(6)
   ur:send(IDUM_EquipUpdate, {itemtype=typ, id=id})
   return SERR_OK
 end
@@ -172,7 +172,7 @@ REQ[IDUM_UnequipItem] = function(ur, v)
     return err
   end
   ur:db_tagdirty(ur.DB_ROLE)
-  ur:refreshbag()
+  ur:refreshbag(7)
   ur:send(IDUM_EquipUpdate, {itemtype=typ, id=0})
 end
 

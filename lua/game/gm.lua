@@ -47,7 +47,7 @@ GM.getitem = function(ur, id, count)
     local count  = tonumber(count)
     if not id or not count then return end
     if ur.bag:add(id, count) then
-        ur:refreshbag()
+        ur:refreshbag(2)
     end
 end
 

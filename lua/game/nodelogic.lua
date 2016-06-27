@@ -63,7 +63,7 @@ function nodelogic.dispatch(connid, msgid, msg)
                     if v.box2>0 then
                       ur.bag:add(702, v.box2)
                     end
-                    ur:refreshbag()
+                    ur:refreshbag(3)
                     ur:db_flush()
                     fight.record(roleid, {
                         roleid=roleid,

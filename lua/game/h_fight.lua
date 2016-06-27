@@ -101,7 +101,7 @@ REQ[IDUM_ReqLoginFight] = function(ur, v)
         }
         if ticketcnt > 0 then -- take ticket
             ur.bag:remove(1001, ticketcnt)
-            ur:refreshbag()
+            ur:refreshbag(4)
         end
     end
     ur:send(IDUM_LoginFightKey, {serverid=serverid, key=r.key})

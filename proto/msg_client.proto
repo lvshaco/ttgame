@@ -123,6 +123,8 @@ message UM_UseItem {
 }
 message UM_ItemUpdate {
     repeated item_info list=1; // item_info::stack == 0表示此物品删除，否则更新stack值
+    optional int32 type=2;
+    //1.开宝箱 2.gm获得 3.战斗奖励 4.进战斗花费 5. 购买 6. 使用物品 7.卸装备 8.英雄升级 9领取票 10花环
 
 }
 message UM_UnequipItem {

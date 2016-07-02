@@ -33,5 +33,7 @@ MSG_REQNAME[IDUM_SetDesc] = "UM_SetDesc"
 MSG_REQNAME[IDUM_SetGeo] = "UM_SetGeo"
 MSG_REQNAME[IDUM_SetIcon] = "UM_SetIcon"
 MSG_REQNAME[IDUM_GetTicket] = "UM_GetTicket"
+MSG_REQNAME[IDUM_Sign] = "UM_Sign"
+MSG_REQNAME[IDUM_Award] = "UM_Award"
 MSG_REQNAME[IDUM_ReqIcons] = "UM_ReqIcons"
 return MSG_REQNAME

@@ -47,6 +47,8 @@ rawset(_ENV, "IDUM_SetDesc", 112) -- 设置个人说明
 rawset(_ENV, "IDUM_SetGeo", 113) -- 设置地理位置
 rawset(_ENV, "IDUM_SetIcon", 114) -- 设置地理位置
 rawset(_ENV, "IDUM_GetTicket", 115) -- 免费领票
+rawset(_ENV, "IDUM_Sign", 116) --签到
+rawset(_ENV, "IDUM_Award", 117) --领奖
 
 rawset(_ENV, "IDUM_ReqIcons", 120) --批量请求照片icon数据
 

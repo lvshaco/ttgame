@@ -50,6 +50,8 @@ IDUM_SetDesc=112; // 设置个人说明
 IDUM_SetGeo=113; // 设置地理位置
 IDUM_SetIcon=114; // 设置地理位置
 IDUM_GetTicket=115; // 免费领票
+IDUM_Sign=116; //签到
+IDUM_Award=117; //领奖
 
 IDUM_ReqIcons=120; //批量请求照片icon数据
 
@@ -125,7 +127,7 @@ message UM_UseItem {
 message UM_ItemUpdate {
     repeated item_info list=1; // item_info::stack == 0表示此物品删除，否则更新stack值
     optional int32 type=2;
-    //1.开宝箱 2.gm获得 3.战斗奖励 4.进战斗花费 5. 购买 6. 使用物品 7.卸装备 8.英雄升级 9领取票 10花环
+    //1.开宝箱 2.gm获得 3.战斗奖励 4.进战斗花费 5. 购买 6. 使用物品 7.卸装备 8.英雄升级 9领取票 10花环 11领取宝箱
 
 }
 message UM_UnequipItem {
@@ -343,4 +345,8 @@ message UM_ReqIcons {
 }
 message UM_Icons {
     repeated icon_data list= 1;
+}
+message UM_Sign {
+}
+message UM_Award {
 }

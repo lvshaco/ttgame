@@ -84,20 +84,29 @@ function logic.init(conf)
 end
 
 local __lastday = util.msecond2day(shaco.now())
+local __lastw = shaco.now()//1000
 
 function logic.update()
     local now = shaco.now()//1000
 	local nowday = util.second2day(now)
+    local week = os.date("*t", now).wday
+
     local daychanged
     if nowday ~= __lastday then
         __lastday = nowday
         daychanged = true
     end
+    
+    local weekchanged, week = util.changeweek(__lastw, now)
+    if weekchanged then
+        __lastw = week
+        weekchanged = true
+    end
     if daychanged then
         calc_season(now)
     end
-	userpool.update(now, daychanged)
-	rank.update(now, daychanged)
+	userpool.update(now, daychanged, weekchanged)
+	rank.update(now, daychanged, weekchanged)
 end
 
 function logic.dispatch(connid, msgid, v)

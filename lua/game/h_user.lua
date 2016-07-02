@@ -6,6 +6,7 @@ local myredis = require "myredis"
 local userpool = require "userpool"
 local cache = require "cache"
 local pb = require "protobuf"
+local util = require "util"
 
 local REQ = {}
 
@@ -193,6 +194,41 @@ REQ[IDUM_ReqIcons] = function(ur, v)
         end
     end
     ur:send(IDUM_Icons, {list = l})
+end
+
+REQ[IDUM_Sign] = function(ur, v)
+    if ur.info.sign == 0 then
+        return SERR_State
+    end
+    ur:copper_got(10)
+    ur.info.sign = 0
+    ur:db_tagdirty(ur.DB_ROLE)
+    ur:syncrole()
+    return SERR_OK
+end
+
+REQ[IDUM_Award] = function(ur, v)
+    local ok = false
+    local w = util.week(shaco.now()//1000)
+    local info = ur.info
+    shaco.trace("cur week:", w, info.awardwday1, info.awardwday2)
+    if info.awardwday1 == w then
+        info.awardwday1 = 0
+        ok = true
+    end
+    if info.awardwday2 == w then
+        info.awardwday2 = 0
+        ok = true
+    end
+    if not ok then
+        return SERR_State
+    end
+    ur:gold_got(20)
+    ur:db_tagdirty(ur.DB_ROLE)
+    ur:syncrole()
+    ur.bag:add(701, 1)
+    ur:refreshbag(11)
+    return SERR_OK
 end
 
 return REQ

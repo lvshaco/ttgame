@@ -79,11 +79,11 @@ function userpool.logout(connid, err)
     end
 end
 
-function userpool.update(now, daychanged)
+function userpool.update(now, daychanged, weekchanged)
     for _, ur in pairs(oid2user) do
         ur:update(now)
         if daychanged then
-            ur:onchangeday()
+            ur:onchangeday(false, weekchanged)
         end
     end
 end

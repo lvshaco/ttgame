@@ -9,8 +9,30 @@ end
 function util.msecond2day(msec)
     return (msec+_hour8ms)//86400000
 end
+
 function util.daybase(sec)
     return util.second2day(sec)*86400-_hour8s
+end
+
+function util.week(sec)
+    local w = os.date("*t", sec).wday-1
+    return w==0 and 7 or w
+end
+
+function util.weekbase(sec)
+    local tm = os.date("*t", sec)
+    local week = tm.wday-1
+    if week==0 then
+        week=7
+    end
+    sec = sec - (week-1)*24*3600
+    return util.daybase(sec)
+end
+
+function util.changeweek(last, now)
+    local w1 = util.weekbase(last)
+    local w2 = util.weekbase(now)
+    return w2~=w1, w2
 end
 
 function util.strftime(sec)

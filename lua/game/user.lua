@@ -86,6 +86,10 @@ function user:init(roleid, gmlevel, info, items)
             equips=false,
             free_ticket=0,
             refresh_time=0,
+            sign=0,
+            awardwday1=0,
+            awardwday2=0,
+            refresh_wtime=0,
         }
         self:db_tagdirty(self.DB_ROLE)
     else
@@ -111,9 +115,10 @@ function user:init(roleid, gmlevel, info, items)
     local now = shaco.now()//1000
     local now_day = util.second2day(now)
     local last_day = util.second2day(info.refresh_time)
-       
+    local weekchanged = util.changeweek(info.refresh_wtime, now)
+
     if now_day ~= last_day then
-        self:onchangeday(true)
+        self:onchangeday(true, weekchanged)
     else
         headflower(self)
     end
@@ -148,19 +153,32 @@ end
 function user:update(now)
 end
 
-function user:onchangeday(login)
+function user:onchangeday(login, weekchanged)
     local now = shaco.now()//1000
 	self.info.refresh_time = now
    
-    local uprole = false
     local info = self.info
     if info.free_ticket < 1 then
         info.free_ticket = 1
-        uprole = true
     end
-    if uprole then
-        self:syncrole()
+    info.sign = 0 -- 
+    if weekchanged then
+        info.refresh_wtime = now
+
+        local w = util.week(now)
+        info.awardwday1 = math.random(w,7)
+        if 7-w>=1 then
+            while true do
+                info.awardwday2 = math.random(w,7)
+                if info.awardwday2 ~= info.awardwday1 then
+                    break
+                end
+            end
+        end
     end
+    
+    self:syncrole()
+    
     headflower(self)
     self:db_tagdirty(self.DB_ROLE)
     self:db_flush()

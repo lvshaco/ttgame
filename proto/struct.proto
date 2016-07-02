@@ -31,6 +31,10 @@ message role_info {
     repeated item_info equips =22;//光环, 孢子，残影，花环
     optional uint32 free_ticket=23;//免费ticket数量
     optional uint32 refresh_time=24; // 上次跨天刷新时间
+    optional bool sign=25; // 是否签到
+    optional uint32 awardwday1=26; // 木质box和20元宝(第1次周几,1~7, 0为没有, 当天才显示)
+    optional uint32 awardwday2=27; // 同上
+    optional uint32 refresh_wtime=28; // 上次周刷新时间
 }
 
 message item_info {

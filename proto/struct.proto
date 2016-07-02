@@ -35,6 +35,8 @@ message role_info {
     optional uint32 awardwday1=26; // 木质box和20元宝(第1次周几,1~7, 0为没有, 当天才显示)
     optional uint32 awardwday2=27; // 同上
     optional uint32 refresh_wtime=28; // 上次周刷新时间
+    optional uint32 last_sign_time=29; // 上次签到时间(client据此判断是否当前月，是就按照sign_tags显示对应记录)
+    optional uint32 sign_tags=30; // 签到记录(32bit，从低到高表示1～31号, 1表示又签到)
 }
 
 message item_info {

@@ -86,10 +86,12 @@ function user:init(roleid, gmlevel, info, items)
             equips=false,
             free_ticket=0,
             refresh_time=0,
-            sign=0,
+            sign=false,
             awardwday1=0,
             awardwday2=0,
             refresh_wtime=0,
+            last_sign_time=0,
+            sign_tags=0,
         }
         self:db_tagdirty(self.DB_ROLE)
     else
@@ -161,7 +163,7 @@ function user:onchangeday(login, weekchanged)
     if info.free_ticket < 1 then
         info.free_ticket = 1
     end
-    info.sign = 0 -- 
+    info.sign = false -- 
     if weekchanged then
         info.refresh_wtime = now
 

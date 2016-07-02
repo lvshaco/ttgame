@@ -197,11 +197,24 @@ REQ[IDUM_ReqIcons] = function(ur, v)
 end
 
 REQ[IDUM_Sign] = function(ur, v)
-    if ur.info.sign == 0 then
+    local info = ur.info
+    if info.sign == true then
         return SERR_State
     end
+    local now = shaco.now()//1000
+    
+    local lasttm = os.date("*t", info.last_sign_time)
+    local tm = os.date("*t", now)
+    local day = tm.day
+    if tm.year == lasttm.year and tm.month == lasttm.month then
+        info.sign_tags = (info.sign_tags) | (1<<(day-1))
+    else
+        info.sign_tags = (1<<(day-1))
+    end
+    info.last_sign_time = now
+
     ur:copper_got(10)
-    ur.info.sign = 0
+    info.sign = true
     ur:db_tagdirty(ur.DB_ROLE)
     ur:syncrole()
     return SERR_OK

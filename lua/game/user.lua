@@ -130,6 +130,8 @@ function user:init(roleid, gmlevel, info, items)
 end
 
 function user:entergame()
+    self:send(IDUM_AwardList, {list = ctx.award.list})
+
     local fighting = fighttag.unset(self.info.roleid);
     self.fighting = fighting
 	self:send(IDUM_EnterGame, {info=self.info, servertime=shaco.now()//1000, 

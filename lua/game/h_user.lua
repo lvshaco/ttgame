@@ -7,6 +7,7 @@ local userpool = require "userpool"
 local cache = require "cache"
 local pb = require "protobuf"
 local util = require "util"
+local ctx = require "ctx"
 
 local REQ = {}
 
@@ -221,26 +222,33 @@ REQ[IDUM_Sign] = function(ur, v)
 end
 
 REQ[IDUM_Award] = function(ur, v)
-    local ok = false
-    local w = util.week(shaco.now()//1000)
     local info = ur.info
-    shaco.trace("cur week:", w, info.awardwday1, info.awardwday2)
-    if info.awardwday1 == w then
-        info.awardwday1 = 0
-        ok = true
+    local index
+    local typ
+    local day = tonumber(os.date("*t").day)
+    for i, v in ipairs(ctx.award.list) do
+        if day == v.day then
+            index = i
+            typ = v.type
+            break
+        end
     end
-    if info.awardwday2 == w then
-        info.awardwday2 = 0
-        ok = true
-    end
-    if not ok then
+    if not index then
         return SERR_State
     end
-    ur:gold_got(20)
+    if info.award_gots[index] then
+        shaco.error("has got award", index)
+        return SERR_State
+    end
+    info.award_gots[index] = true
+    if typ==1 then
+        ur.bag:add(701, 1)
+        ur:refreshbag(11)
+    else
+        ur:gold_got(20)
+    end
     ur:db_tagdirty(ur.DB_ROLE)
     ur:syncrole()
-    ur.bag:add(701, 1)
-    ur:refreshbag(11)
     return SERR_OK
 end
 

@@ -87,11 +87,10 @@ function user:init(roleid, gmlevel, info, items)
             free_ticket=0,
             refresh_time=0,
             sign=false,
-            awardwday1=0,
-            awardwday2=0,
-            refresh_wtime=0,
             last_sign_time=0,
             sign_tags=0,
+            award_refresh_time=0,
+            award_gots=false,
         }
         self:db_tagdirty(self.DB_ROLE)
     else
@@ -114,13 +113,15 @@ function user:init(roleid, gmlevel, info, items)
     self.gmlevel = gmlevel
     self.bag = bag.new(items and items.list or nil)
 
+    if not self.award_gots then
+        self.award_gots = {}
+    end
     local now = shaco.now()//1000
     local now_day = util.second2day(now)
     local last_day = util.second2day(info.refresh_time)
-    local weekchanged = util.changeweek(info.refresh_wtime, now)
 
     if now_day ~= last_day then
-        self:onchangeday(true, weekchanged)
+        self:onchangeday(true)
     else
         headflower(self)
     end
@@ -164,19 +165,13 @@ function user:onchangeday(login, weekchanged)
         info.free_ticket = 1
     end
     info.sign = false -- 
-    if weekchanged then
-        info.refresh_wtime = now
 
-        local w = util.week(now)
-        info.awardwday1 = math.random(w,7)
-        if 7-w>=1 then
-            while true do
-                info.awardwday2 = math.random(w,7)
-                if info.awardwday2 ~= info.awardwday1 then
-                    break
-                end
-            end
+    if info.award_refresh_time ~= ctx.award.refresh_time then
+        info.award_gots = {}
+        for i=1, #ctx.award.list do
+            table.insert(info.award_gots, false)
         end
+        info.award_refresh_time = ctx.award.refresh_time
     end
     
     self:syncrole()

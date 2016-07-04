@@ -91,6 +91,7 @@ rawset(_ENV, "IDUM_SeasonRank", 1100) --赛季排名
 rawset(_ENV, "IDUM_GameRecord", 1101) --比赛记录
 rawset(_ENV, "IDUM_Photos", 1103)--照片列表
 
+rawset(_ENV, "IDUM_AwardList", 1117) --当月奖励列表
 rawset(_ENV, "IDUM_Icons", 1120) --照片icon数据列表
 
 rawset(_ENV, "IDUM_CLIE", 1999) -- to client end

@@ -236,8 +236,8 @@ local function check(proto)
                 end
                 if f.label == "repeated" then
                     for k, v in pairs(_TYPES) do
-                        assert(f.type ~= k, 
-                        sfmt("repeated field `%s:%s` should be a struct", b.name, f.name))
+                       -- assert(f.type ~= k, 
+                       -- sfmt("repeated field `%s:%s` should be a struct", b.name, f.name))
                     end
                 end
             end

@@ -94,6 +94,7 @@ IDUM_SeasonRank=1100; //赛季排名
 IDUM_GameRecord=1101; //比赛记录
 IDUM_Photos=1103;//照片列表
 
+IDUM_AwardList=1117; //当月奖励列表
 IDUM_Icons=1120; //照片icon数据列表
 
 IDUM_CLIE =1999; // to client end
@@ -349,4 +350,7 @@ message UM_Icons {
 message UM_Sign {
 }
 message UM_Award {
+}
+message UM_AwardList {
+    repeated award_info list=1;
 }

@@ -2,9 +2,11 @@ local shaco = require "shaco"
 local login = require "login"
 local userpool = require "userpool"
 local user = require "user"
---local mydb = require "mydb"
+local pb = require "protobuf"
 local myredis = require "myredis"
 local gamestate = require "gamestate"
+local msghelper = require "msghelper"
+local tbl = require "tbl"
 local MSG_REQNAME = require "msg_reqname"
 local rank = require "rank"
 local util = require "util"
@@ -46,6 +48,67 @@ local function calc_season(now)
     shaco.info("season:", season)
 end
 
+local A_DAYS = {
+    1, 8, 15, 22
+}
+
+local function calc_award(now)
+    local award = ctx.award
+    if not award then
+        award = myredis.get("award")
+        if not award then
+            award = {
+                refresh_time = 0,
+            }
+        else
+            award = pb.decode("award_list", award)
+            shaco.info(tbl(award, "load award"))
+        end
+        ctx.award = award
+    end
+    local tm = os.date("*t", now)
+    local lasttm = os.date("*t", award.refresh_time)
+
+    if tm.year == lasttm.year and
+       tm.month == lasttm.month then
+        if not award.list then
+            award.list = {}
+        end
+    else
+        local l = {}
+        for _, v in ipairs(A_DAYS) do
+            if v>= tm.day then
+                local v2 = v+6
+                local day1 = math.random(v, v2) 
+                local day2
+                while true do
+                    day2 = math.random(v, v2)
+                    if day2 ~= day1 then
+                        break
+                    end
+                end
+                local a1 = { type=1, day=day1 }
+                local a2 = { type=2, day=day2 }
+                if day1 < day2 then
+                    l[#l+1] = a1
+                    l[#l+1] = a2
+                else
+                    l[#l+1] = a2
+                    l[#l+1] = a1
+                end
+            end
+        end
+        award.list = l
+        award.refresh_time = now
+        myredis.set("award", pb.encode("award_list", award))
+        shaco.info(tbl(award, "recalc award"))
+        local pkg = msghelper.packmsg(IDUM_AwardList, {list = award.list})
+        userpool.foreach_user(function(ur)
+            ur:sendpackedmsg(IDUM_AwardList, pkg)
+        end) 
+    end 
+end
+
 function logic.init(conf)
     local now = shaco.now()//1000
     math.randomseed(now)
@@ -80,6 +143,8 @@ function logic.init(conf)
     -- season
     calc_season(now)
 
+    calc_award(now)
+
     rank.init()
 end
 
@@ -104,6 +169,7 @@ function logic.update()
     end
     if daychanged then
         calc_season(now)
+        calc_award(now)
     end
 	userpool.update(now, daychanged, weekchanged)
 	rank.update(now, daychanged, weekchanged)

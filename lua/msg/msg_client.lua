@@ -1,6 +1,6 @@
 --/*this file is generate by proto2c.lua do not change it by hand*/
 --IDUM_CLI
-
+--option allow_alias = true;
 -------------------------------------------
 --c->s
 -------------------------------------------

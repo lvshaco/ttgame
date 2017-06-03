@@ -3,7 +3,7 @@ import "struct.proto";
 
 // message id
 enum IDUM_CLI {
-option allow_alias = true;
+//option allow_alias = true;
 //-----------------------------------------
 //c->s
 //-----------------------------------------
